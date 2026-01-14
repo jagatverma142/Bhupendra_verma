@@ -7,16 +7,16 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  // Dynamic Navigation Items - Centralized Configuration
+  // Dynamic Navigation Items
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Projects', path: '/projects' },
     { name: 'Services', path: '/services' },
     { name: 'Contact', path: '/contact' },
+    // ❌ YAHAN SE 'RESUME' HATA DIYA (Taaki do baar na dikhe)
   ];
 
-  // Logic: Change background on scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -25,7 +25,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Logic: Close menu when route changes
   useEffect(() => {
     setMenuOpen(false);
   }, [location]);
@@ -34,7 +33,7 @@ const Navbar = () => {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
         
-        {/* Branding with Logo Pulse */}
+        {/* Branding */}
         <div className="nav-logo">
           <div className="logo-box">
             <span className="logo-char">B</span>
@@ -46,7 +45,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Dynamic Navigation Menu */}
+        {/* Menu */}
         <div className={`nav-menu ${menuOpen ? 'active' : ''}`}>
           <ul className="nav-links">
             {navItems.map((item, index) => (
@@ -60,12 +59,17 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
+          
+          {/* ✅ CHANGE YAHAN KIYA HAI: Button ko Link banaya */}
           <div className="nav-cta" style={{ '--i': navItems.length }}>
-            <button className="contact-btn">Resume</button>
+            <NavLink to="/resume">
+               <button className="contact-btn">Resume</button>
+            </NavLink>
           </div>
+          
         </div>
 
-        {/* Animated Hamburger Icon */}
+        {/* Hamburger */}
         <div 
           className={`hamburger ${menuOpen ? 'toggle' : ''}`} 
           onClick={() => setMenuOpen(!menuOpen)}

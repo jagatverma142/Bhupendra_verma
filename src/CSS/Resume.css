@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-green: #a3ff12;
+  --primary-cyan: #00f0ff;
+  --bg-dark: #0a0a0a;
+  --bg-card: #121212;
+}
+
+/* --- HERO SECTION --- */
+.resume-hero {
+  position: relative;
+  min-height: 45vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 60px;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+/* Animated Orb */
+.resume-bg-orb {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  animation: pulseCyan 6s infinite alternate;
+}
+
+@keyframes pulseCyan {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+}
+
+.resume-grid-bg {
+  position: absolute; width: 100%; height: 100%;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: -2;
+  mask-image: radial-gradient(circle, black 40%, transparent 80%);
+}
+
+.stroke-text { -webkit-text-stroke: 1px var(--primary-cyan); color: transparent; font-weight: 800; }
+.glow-text { text-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+
+/* Download Button */
+.download-btn-dynamic {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(45deg, var(--primary-cyan), #0099ff);
+  color: #000;
+  padding: 15px 35px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+  transition: all 0.4s ease;
+  margin-top: 20px;
+}
+
+/* --- GRID LAYOUT --- */
+.resume-section { padding-top: 20px; padding-bottom: 80px; }
+
+.resume-grid-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.column-title {
+  font-size: 1.4rem; color: #fff; margin-bottom: 30px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 15px;
+}
+.title-icon { color: var(--primary-cyan); }
+
+/* --- LEFT COLUMN: TIMELINE --- */
+.timeline-container { position: relative; }
+
+/* Desktop: Line is indented */
+.timeline-line-track {
+  position: absolute;
+  left: 0; top: 15px; bottom: 0; width: 2px;
+  background: var(--primary-cyan);
+  box-shadow: 0 0 8px var(--primary-cyan);
+  transform-origin: top;
+}
+
+.timeline-item-dynamic { position: relative; margin-bottom: 50px; padding-left: 30px; }
+
+.timeline-dot-dynamic {
+  position: absolute; left: -37px; top: 6px;
+  width: 14px; height: 14px;
+  background: var(--bg-dark);
+  border: 3px solid var(--primary-cyan);
+  border-radius: 50%;
+  z-index: 2;
+  transition: 0.3s;
+}
+
+.timeline-card-content {
+  background: rgba(255,255,255,0.02);
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: 0.3s;
+}
+
+/* Role Visibility Helpers */
+.mobile-role { display: none; }
+.desktop-role { display: block; margin-bottom: 10px; }
+.desktop-role h3 { font-size: 1.3rem; color: #fff; margin: 0; }
+.desktop-role h4 { font-size: 1rem; color: #888; font-weight: 400; margin: 2px 0 0 0; }
+
+.resume-date {
+  display: inline-block;
+  background: rgba(0, 240, 255, 0.08); color: var(--primary-cyan);
+  font-size: 0.75rem; font-weight: 600; padding: 4px 10px;
+  border-radius: 4px; margin-bottom: 15px;
+}
+
+.resume-desc { color: #ccc; margin-bottom: 15px; line-height: 1.6; font-size: 0.95rem; }
+
+.task-list { list-style: none; padding: 0; }
+.task-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  color: #999; font-size: 0.9rem; margin-bottom: 8px;
+}
+.bullet-icon { color: var(--primary-green); flex-shrink: 0; margin-top: 4px; }
+
+
+/* --- RIGHT COLUMN: EDUCATION & SKILLS --- */
+.resume-block { margin-bottom: 50px; }
+
+.edu-card-dynamic {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+.edu-card-dynamic:hover { border-color: var(--primary-cyan); }
+
+.edu-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+.edu-header h3 { font-size: 1rem; color: #fff; margin: 0; }
+.edu-year { font-size: 0.8rem; color: var(--primary-green); font-weight: 600; white-space: nowrap; }
+.edu-card-dynamic h4 { font-size: 0.9rem; color: #888; margin: 0; font-weight: 400; }
+.edu-card-dynamic p { font-size: 0.85rem; color: #666; margin-top: 5px; }
+
+/* Skills */
+.skill-tags-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.resume-tag {
+  background: rgba(255,255,255,0.05);
+  color: #ccc;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+  cursor: default;
+  transition: 0.2s;
+}
+
+.resume-tag.outline { background: transparent; border-color: rgba(255,255,255,0.15); }
+
+
+/* =========================================
+   MOBILE RESPONSIVENESS (The Key Update)
+   ========================================= */
+
+@media (max-width: 968px) {
+  .resume-grid-layout { 
+    grid-template-columns: 1fr; /* Stack columns */
+    gap: 50px; 
+  }
+}
+
+@media (max-width: 768px) {
+  .resume-hero { min-height: auto; padding-top: 20px; }
+  .main-title { font-size: 2.5rem; }
+  
+  /* Timeline Mobile Readjustment */
+  .timeline-container { 
+    padding-left: 0; /* Remove old padding */
+    margin-left: 0;
+  }
+  
+  /* Move line to far left */
+  .timeline-line-track { left: 10px; }
+  
+  /* Center dots on the new line position */
+  .timeline-dot-dynamic { left: 3px; }
+  
+  /* Push content to the right of the line */
+  .timeline-item-dynamic { 
+    padding-left: 35px; /* Space for line */
+    margin-bottom: 40px;
+  }
+  
+  .timeline-card-content { padding: 20px; }
+  
+  /* Mobile Header Row adjustments */
+  .card-header-row {
+    display: flex;
+    flex-direction: column-reverse; /* Date above role looks better on mobile? Or below */
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .resume-date { margin-bottom: 5px; }
+  
+  /* Switch role visibility */
+  .desktop-role { display: none; }
+  .mobile-role { display: block; }
+  .mobile-role h3 { font-size: 1.2rem; color: #fff; margin: 0; }
+  .mobile-role h4 { font-size: 0.95rem; color: #888; margin: 0; }
+}
+
+@media (max-width: 480px) {
+  .main-title { font-size: 2rem; }
+  .download-btn-dynamic { width: 100%; justify-content: center; }
+  
+  .timeline-item-dynamic { padding-left: 25px; }
+  .timeline-line-track { left: 5px; }
+  .timeline-dot-dynamic { left: -2px; width: 12px; height: 12px; }
+  
+  .task-list li { font-size: 0.85rem; }
+}
