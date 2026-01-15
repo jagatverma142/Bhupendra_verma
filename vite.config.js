@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        base: "/Bhupendra_verma/",
+        base: "Bhupendra_verma",
         plugins: [['babel-plugin-react-compiler']],
       },
     }),
