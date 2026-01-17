@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useSpring } from 'framer-motion';
-import { ArrowRight, Code, Palette, Layers, MousePointer2, ExternalLink, Linkedin, Instagram, Dribbble, Twitter } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Code, Palette, Layers, MousePointer2, ExternalLink, Linkedin, Instagram, Twitter } from 'lucide-react';
 import '../CSS/Home.css';
+import hunterImg from '../assets/hunter.jpeg'; // ✅ Fix image import
 
-// --- 1. DATA SECTION (Content yaha change karein) ---
+// --- 1. DATA SECTION ---
 const featuresData = [
   { icon: <Palette size={28} />, title: "Tailored Design", desc: "Unique brand identities that tell your specific story." },
   { icon: <MousePointer2 size={28} />, title: "User-Centric", desc: "Obsessed with intuitive UX/UI journeys." },
@@ -24,23 +25,19 @@ const servicesData = [
   { icon: <Palette size={32} />, title: "Branding", desc: "Stand out in the market.", list: ["Logo Design", "Color Theory", "Identity"] }
 ];
 
-// --- 2. SUB-COMPONENTS (Easy Format) ---
-
+// --- 2. SUB-COMPONENTS ---
 const HeroSection = () => (
   <section className="hero-section">
     <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="availability-badge">
       <span className="green-dot animate-pulse"></span> AVAILABLE FOR WORK
     </motion.div>
-    
     <motion.h1 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="main-title">
       BHUPENDRA<br />VERMA
     </motion.h1>
-    
     <div className="hero-content">
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="hero-subtext">
         Blending artistry with cutting-edge technology to deliver websites that drive results.
       </motion.p>
-      
       <Link to="/contact">
         <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="cta-button">
           Schedule a consultation
@@ -111,7 +108,7 @@ const AboutSection = () => (
   <section className="section about">
     <div className="about-container">
       <div className="about-image">
-         <img src="https://placehold.co/400x500/a3ff12/000?text=BV" alt="Profile" />
+         <img src={hunterImg} alt="Bhupendra Verma" />
       </div>
       <div className="about-content">
          <span className="pill-label">ABOUT ME</span>
@@ -131,32 +128,22 @@ const FooterSection = () => (
   <footer className="footer-cta">
     <span className="pill-label">CONTACT</span>
     <motion.h2 whileHover={{ scale: 1.05 }} className="footer-heading">Let's Turn Ideas<br/>into Reality</motion.h2>
-    <a href="mailto:Bhupendra8171121943@gmail.com" className="email-link">Bhupendra8171121943@gmail.com</a>
-    <div className="footer-nav">
-      {['Home', 'About', 'Projects', 'Services', 'Contact'].map(item => <Link to={`/${item.toLowerCase()}`} key={item}>{item}</Link>)}
-    </div>
+    <a href="mailto:Bhupendra8171121943@gmail.com" className="email-link">
+      Bhupendra8171121943@gmail.com
+    </a>
   </footer>
 );
 
-// --- 3. MAIN COMPONENT ---
-
-const Home = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-
-  return (
-    <div className="home-container">
-      {/* Top Green Scroll Bar */}
-      <motion.div style={{ scaleX, position: 'fixed', top: 0, left: 0, right: 0, height: '4px', background: '#a3ff12', zIndex: 9999, transformOrigin: '0%' }} />
-
-      <HeroSection />
-      <WhyWorkSection />
-      <ProjectsSection />
-      <ServicesSection />
-      <AboutSection />
-      <FooterSection />
-    </div>
-  );
-};
+// --- MAIN EXPORT ---
+const Home = () => (
+  <>
+    <HeroSection />
+    <WhyWorkSection />
+    <ProjectsSection />
+    <ServicesSection />
+    <AboutSection />
+    <FooterSection />
+  </>
+);
 
 export default Home;
