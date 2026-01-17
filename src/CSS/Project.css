@@ -19,11 +19,13 @@
   position: relative;
   min-height: 45vh;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 60px;
-  padding: 10px 20px;
+  margin-top: 160px;
+  padding: 0px 320px;
+
 }
 
 .bg-blur-orb {

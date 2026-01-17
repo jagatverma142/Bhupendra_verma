@@ -20,13 +20,13 @@ body {
 /* --- 1. HERO SECTION (With Glow) --- */
 .about-hero-section {
   position: relative;
-  height: 60vh;
+  height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 60px; /* Navbar space */
+  margin-top: 160px; /* Navbar space */
 }
 
 .about-bg-glow {

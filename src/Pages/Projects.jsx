@@ -1,73 +1,139 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, Filter, Layers, Zap, FolderOpen } from 'lucide-react';
+import { ExternalLink, Github, Filter, Zap, FolderOpen } from 'lucide-react';
 import '../CSS/Project.css';
 
-// --- 1. ENHANCED DATA ---
+// --- 1. ENHANCED DATA WITH REAL IMAGES ---
 const projectsData = [
+  // --- DJANGO PROJECTS ---
   {
     id: 1,
-    title: "Neon E-Commerce",
-    category: "Web Development",
+    title: "College Management System",
+    category: "Django",
     status: "Live",
-    img: "https://placehold.co/600x400/111/a3ff12?text=E-Commerce",
-    desc: "A full-stack shopping platform with real-time inventory, Stripe payments, and a dark-mode UI.",
-    tech: ["Next.js", "Tailwind", "Stripe", "Supabase"],
+    img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop", // University Image
+    desc: "Comprehensive platform to manage student/faculty records and department schedules.",
+    tech: ["Django", "MySQL", "Python", "HTML/CSS"],
     links: { live: "#", repo: "#" }
   },
   {
     id: 2,
-    title: "Fintech Dashboard",
-    category: "UI/UX Design",
-    status: "Concept",
-    img: "https://placehold.co/600x400/222/a3ff12?text=Dashboard",
-    desc: "A high-fidelity prototype for a banking app focusing on data visualization and user retention.",
-    tech: ["Figma", "Chart.js", "React"],
+    title: "Hospital Patient Manager",
+    category: "Django",
+    status: "Live",
+    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop", // Hospital/iPad Image
+    desc: "Secure web app for patient records and appointments with Role-Based Access Control.",
+    tech: ["Django", "RBAC", "Bootstrap", "SQLite"],
     links: { live: "#", repo: "#" }
   },
   {
     id: 3,
-    title: "AI Image Generator",
-    category: "Web App",
-    status: "Beta",
-    img: "https://placehold.co/600x400/000/fff?text=AI+Tool",
-    desc: "An application allowing users to generate images from text prompts using OpenAI's DALL-E API.",
-    tech: ["React", "Node.js", "OpenAI API", "MongoDB"],
+    title: "Insurance Claim Portal",
+    category: "Django",
+    status: "Done",
+    img: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop", // Paperwork/Business
+    desc: "Secure portal for users to submit claims and agents to track statuses with high data integrity.",
+    tech: ["Django", "Python", "Secure Auth"],
     links: { live: "#", repo: "#" }
   },
   {
     id: 4,
-    title: "Luxury Hotel Booking",
-    category: "Web Development",
-    status: "Live",
-    img: "https://placehold.co/600x400/333/a3ff12?text=Hotel+Site",
-    desc: "A premium booking experience with virtual 3D tours and seamless reservation management.",
-    tech: ["Vue.js", "GSAP", "Firebase"],
+    title: "Food Ordering Site",
+    category: "Django",
+    status: "Beta",
+    img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop", // Delicious Food
+    desc: "Dynamic e-commerce site featuring a real-time shopping cart and menu management APIs.",
+    tech: ["Django", "REST API", "JavaScript", "AJAX"],
     links: { live: "#", repo: "#" }
   },
   {
     id: 5,
-    title: "Fitness Tracker App",
-    category: "Mobile App",
+    title: "Inventory Management",
+    category: "Django",
+    status: "Done",
+    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop", // Warehouse/Boxes
+    desc: "Automated system to track stock levels, generate reports, and manage supplier data.",
+    tech: ["Django", "MySQL", "Chart.js"],
+    links: { live: "#", repo: "#" }
+  },
+
+  // --- MERN / REACT PROJECTS ---
+  {
+    id: 6,
+    title: "Jagat-Med Health Portal",
+    category: "MERN Stack",
     status: "Live",
-    img: "https://placehold.co/600x400/111/fff?text=Mobile+App",
-    desc: "Cross-platform mobile app for tracking workouts, diet, and progress with social features.",
-    tech: ["React Native", "Expo", "GraphQL"],
+    img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop", // Medical/Tech
+    desc: "Responsive medical website with dynamic routing and service listings deployed on GitHub Pages.",
+    tech: ["React", "Vite", "Tailwind", "Gh-Pages"],
     links: { live: "#", repo: "#" }
   },
   {
-    id: 6,
-    title: "Corporate Rebranding",
-    category: "Branding",
+    id: 7,
+    title: "Online Course LMS",
+    category: "MERN Stack",
+    status: "Beta",
+    img: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=800&auto=format&fit=crop", // Study/Coffee
+    desc: "Educational portal with restricted content, student progress tracking, and certification.",
+    tech: ["MongoDB", "Express", "React", "Node.js"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 8,
+    title: "Personal Portfolio",
+    category: "MERN Stack",
+    status: "Live",
+    img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop", // Laptop/Code
+    desc: "High-performance personal portfolio showcasing skills, projects, and contact info.",
+    tech: ["React", "Vite", "Framer Motion", "SEO"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 9,
+    title: "Artist Portfolio",
+    category: "MERN Stack",
+    status: "Live",
+    img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop", // Art/Paint
+    desc: "Visually-driven site featuring custom galleries and SEO-optimized content for artists.",
+    tech: ["React", "CSS Grid", "Lazy Load"],
+    links: { live: "#", repo: "#" }
+  },
+
+  // --- ADVANCED WORDPRESS PROJECTS ---
+  {
+    id: 10,
+    title: "Headless E-Commerce",
+    category: "WordPress",
+    status: "Live",
+    img: "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=800&auto=format&fit=crop", // Shopping Cart
+    desc: "Decoupled architecture using WordPress as CMS and Next.js for a lightning-fast frontend.",
+    tech: ["Next.js", "WPGraphQL", "WooCommerce", "Tailwind"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 11,
+    title: "Custom Real Estate Portal",
+    category: "WordPress",
     status: "Done",
-    img: "https://placehold.co/600x400/222/a3ff12?text=Brand+Identity",
-    desc: "Complete visual identity overhaul including logo, typography, and design system.",
-    tech: ["Illustrator", "Photoshop", "Brand Strategy"],
+    img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800&auto=format&fit=crop", // Modern House
+    desc: "Advanced property listing site with custom post types, advanced filtering, and map integration.",
+    tech: ["Custom Theme", "ACF Pro", "Google Maps API", "PHP"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 12,
+    title: "Event Booking Plugin",
+    category: "WordPress",
+    status: "Plugin",
+    img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop", // Event/Crowd
+    desc: "Developed a custom booking plugin from scratch with AJAX validation and admin dashboard analytics.",
+    tech: ["PHP", "Plugin Dev", "AJAX", "MySQL"],
     links: { live: "#", repo: "#" }
   }
 ];
 
-const categories = ["All", "Web Development", "UI/UX Design", "Web App", "Mobile App"];
+// Updated Categories
+const categories = ["All", "Django", "MERN Stack", "WordPress"];
 
 // --- 2. ANIMATION VARIANTS ---
 const containerVariants = {
@@ -103,8 +169,8 @@ const Projects = () => {
           transition={{ duration: 0.8 }}
         >
           <span className="pill-label">PORTFOLIO</span>
-          <h1 className="main-title">Selected<br /> <span className="stroke-text">Masterpieces</span></h1>
-          <p>Explore a collection where code meets creativity.</p>
+          <h1 className="main-title">My Recent<br /> <span className="stroke-text">Projects</span></h1>
+          <p>A showcase of Full-Stack, MERN & Advanced WordPress development.</p>
         </motion.div>
       </section>
 
@@ -116,7 +182,7 @@ const Projects = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-           <div className="filter-header"><Filter size={16} /> Filter Projects:</div>
+           <div className="filter-header"><Filter size={16} /> Filter Stack:</div>
            <div className="filter-buttons">
              {categories.map((cat) => (
                <button 
@@ -136,7 +202,7 @@ const Projects = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          layout // This prop enables smooth shuffling
+          layout 
         >
           <AnimatePresence mode='popLayout'>
             {filteredProjects.map((project) => (
@@ -151,7 +217,7 @@ const Projects = () => {
               >
                 {/* Image Area */}
                 <div className="card-image-box">
-                  <img src={project.img} alt={project.title} />
+                  <img src={project.img} alt={project.title} loading="lazy" />
                   <span className="status-badge">{project.status}</span>
                   <div className="card-actions">
                     <a href={project.links.repo} className="action-btn" title="View Code">
@@ -194,9 +260,9 @@ const Projects = () => {
 
       {/* Simple CTA Footer */}
       <footer className="footer-cta minimal-footer">
-        <p>Want to see the code behind this portfolio?</p>
-        <a href="https://github.com" className="github-link-btn">
-           Check my GitHub <Github size={18} />
+        <p>Want to hire me for a project?</p>
+        <a href="mailto:your.email@example.com" className="github-link-btn">
+           Contact Me <ExternalLink size={18} />
         </a>
       </footer>
     </div>
