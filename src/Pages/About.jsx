@@ -6,6 +6,7 @@ import {
   FileText, Coffee, Camera, Gamepad2, Search, Zap, CheckCircle 
 } from 'lucide-react';
 import '../CSS/About.css';
+import aboutImage from '../assets/about.jpeg'
 
 // --- 1. ENHANCED DATA ---
 
@@ -108,7 +109,7 @@ const BioSection = () => (
         className="about-image"
         initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
       >
-         <img src="https://placehold.co/400x500/111/a3ff12?text=BV" alt="Bhupendra" className="glow-img" />
+         <img src={aboutImage} alt="Bhupendra" className="glow-img" />
       </motion.div>
     </div>
   </section>
@@ -237,13 +238,7 @@ const About = () => {
       <TimelineSection />
       <CTABanner />
       
-      {/* Minimal Footer for consistency */}
-      <footer className="footer-cta minimal-footer">
-        <div className="footer-nav">
-          {['Home', 'About', 'Projects', 'Services', 'Contact'].map(item => <Link to={`/${item.toLowerCase()}`} key={item}>{item}</Link>)}
-        </div>
-        <p className="copyright">© 2024 Bhupendra Verma. Made with React & Passion.</p>
-      </footer>
+      
     </div>
   );
 };
