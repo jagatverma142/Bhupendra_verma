@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Code, Palette, Layers, MousePointer2, ExternalLink, Linkedin, Instagram, Twitter } from 'lucide-react';
 import '../CSS/Home.css';
+import profileImg from '../Assets/profile.webp';
 
 // --- 1. DATA SECTION ---
 const featuresData = [
@@ -107,7 +108,7 @@ const AboutSection = () => (
   <section className="section about">
     <div className="about-container">
       <div className="about-image">
-         <img src="https://placehold.co/400x500/a3ff12/000?text=BV" alt="Profile" />
+         <img src={profileImg} alt="Profile" />
       </div>
       <div className="about-content">
          <span className="pill-label">ABOUT ME</span>

@@ -9,13 +9,13 @@ import '../CSS/Resume.css';
 // --- DATA ---
 const experienceData = [
   {
-    role: "Senior Web Developer",
+    role: "Web Developer",
     company: "Freelance / Agency",
     period: "2024 - Present",
-    desc: "Leading full-stack development projects for international clients.",
+    desc: "Leading full-stack development projects for clients.",
     tasks: [
       "Architected scalable MERN stack applications for 5+ clients.",
-      "Reduced page load times by 40% using Next.js optimization techniques.",
+      "Reduced page load times by 40% using React.js optimization techniques.",
       "Mentored junior developers and conducted code reviews."
     ]
   },
@@ -45,22 +45,22 @@ const experienceData = [
 
 const educationData = [
   {
-    degree: "B.Tech in Computer Science",
+    degree: "Bachelor of Computer Applications",
     school: "University of Technology",
-    year: "2018 - 2022",
+    year: "2020 - 2023",
     desc: "Specialized in Software Engineering and Data Structures."
   },
   {
     degree: "Full Stack Certification",
     school: "Udemy / Coursera",
-    year: "2021",
-    desc: "Completed intensive bootcamp on MERN stack development."
+    year: "2025",
+    desc: "Completed intensive bootcamp on React.js development."
   }
 ];
 
 const skills = {
-  technical: ["React.js", "Next.js", "Node.js", "Tailwind CSS", "MongoDB", "Framer Motion", "Git", "Figma"],
-  soft: ["Problem Solving", "Team Leadership", "Client Communication", "Agile Methodology", "Time Management"]
+  technical: ["React.js", "Next.js", "Python", "Tailwind CSS", "Django", "Framer Motion", "Git", "Figma", "REST APIs", "SEO Basics", "Responsive Design", "WordPress"],
+  soft: ["Problem Solving", "Team Leadership", "Client Communication", "Agile Methodology", "Time Management", "Adaptability", "Creativity", "Critical Thinking", "Collaboration", "Attention to Detail"]
 };
 
 // --- ANIMATION VARIANTS ---

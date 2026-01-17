@@ -8,6 +8,8 @@ import './index.css';
 import Services from './Pages/Services';
 import Contact from './Pages/Contact';
 import Resume from './Pages/Resume';
+import Footer from './Components/Footer';
+
 function App() {
   return (
     <Router>
@@ -25,6 +27,9 @@ function App() {
 
         {/* Add other routes here like /projects, /contact */}
       </Routes>
+      <Footer />
+
+
     </Router>
   );
 }
