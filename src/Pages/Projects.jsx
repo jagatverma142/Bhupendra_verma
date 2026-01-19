@@ -11,7 +11,7 @@ const projectsData = [
     title: "College Management System",
     category: "Django",
     status: "Live",
-    img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop",
+    img: "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/70adb7fe-aecc-5003-8393-e25f3f8ef6fd/2cb3812c-99df-5a39-a07f-1bcae2817edb.jpg",
     desc: "Comprehensive platform to manage student/faculty records and department schedules.",
     tech: ["Django", "MySQL", "Python", "HTML/CSS"],
     links: { live: "#", repo: "#" }
