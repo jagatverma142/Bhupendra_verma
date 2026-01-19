@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://jagatverma142.github.io/Bhupendra_verma/#/Bhupendra_verma",
+  "homepage": "https://jagatverma142.github.io/Bhupendra_verma/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
