@@ -15,15 +15,24 @@
 }
 
 /* =========================================
-   2. GLOBAL RESETS
+   2. GLOBAL RESETS (CRITICAL FIXES)
    ========================================= */
-body {
+* {
+  box-sizing: border-box; /* Padding se layout nahi bigdega */
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* Right side ka white gap hatane ke liye */
   background-color: var(--bg-dark);
+}
+
+body {
   color: var(--text-white);
   font-family: 'Poppins', sans-serif;
-  overflow-x: hidden; /* Horizontal scroll rokne ke liye */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -36,6 +45,7 @@ section {
   padding: 80px 20px;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 /* =========================================
@@ -51,7 +61,6 @@ section {
   transition: all 0.4s ease;
 }
 
-/* JS se jab 'scrolled' class add hogi */
 .navbar.scrolled {
   padding: 15px 0;
   background: var(--glass-nav);
@@ -67,6 +76,7 @@ section {
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  flex-wrap: wrap; /* Mobile par content tutega nahi */
 }
 
 .nav-links .link {
@@ -84,14 +94,15 @@ section {
    4. HERO SECTION
    ========================================= */
 .hero-section {
-  min-height: 90vh; /* Mobile browser bar fix */
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-top: 120px;
+  padding-top: 140px; /* Navbar space */
   padding-bottom: 60px;
+  width: 100%;
 }
 
 .availability-badge {
@@ -119,13 +130,15 @@ section {
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
 .main-title {
-  font-size: 5rem;
+  /* Responsive Font: Mobile pe chhota, Desktop pe bada */
+  font-size: clamp(2.5rem, 8vw, 5rem);
   line-height: 1.1;
   font-weight: 700;
   margin-bottom: 25px;
   background: linear-gradient(to bottom, #fff, #888);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  word-break: break-word; /* Lambe text ko mobile pe adjust karega */
 }
 
 .hero-subtext {
@@ -141,7 +154,8 @@ section {
   display: flex;
   gap: 15px;
   justify-content: center;
-  flex-wrap: wrap; /* Buttons wrap on small screens */
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .cta-button {
@@ -154,6 +168,7 @@ section {
   border-radius: 50px;
   cursor: pointer;
   transition: transform 0.2s;
+  display: inline-block;
 }
 
 .outline-btn {
@@ -165,6 +180,7 @@ section {
   border-radius: 50px;
   cursor: pointer;
   transition: 0.3s;
+  display: inline-block;
 }
 
 .cta-button:hover, .outline-btn:hover {
@@ -214,7 +230,6 @@ h2 {
   transform: translateY(-5px);
 }
 
-/* Green Card Variant */
 .green-card {
   background: var(--primary-green);
   color: #000;
@@ -252,7 +267,7 @@ h2 {
   overflow: hidden;
   margin-bottom: 20px;
   background: #1a1a1a;
-  aspect-ratio: 16 / 10; /* Fixed Aspect Ratio */
+  aspect-ratio: 16 / 10;
 }
 
 .project-image-wrapper img {
@@ -329,20 +344,20 @@ h2 {
 .footer-nav { margin-top: 60px; display: flex; gap: 40px; justify-content: center; }
 .footer-nav a:hover { color: var(--primary-green); }
 
+
 /* =========================================
-   8. MOBILE RESPONSIVE RULES (FIXED)
+   8. MOBILE RESPONSIVE RULES (FINAL FIXES)
    ========================================= */
 @media (max-width: 992px) {
-  .main-title { font-size: 4rem; }
   .cards-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 768px) {
   
-  /* --- Layout & Spacing --- */
+  /* Layout Spacing */
   section { padding: 60px 20px; }
   
-  /* --- Navbar (Mobile View) --- */
+  /* Navbar */
   .navbar { background: var(--glass-nav); padding: 15px 0; }
   .nav-container { flex-direction: column; gap: 15px; }
   .nav-links {
@@ -354,27 +369,26 @@ h2 {
   }
   .nav-links .link { margin-left: 0; font-size: 13px; }
 
-  /* --- Hero Section --- */
+  /* Hero */
   .hero-section {
-    padding-top: 150px; /* Navbar overlap fix */
+    padding-top: 150px;
     min-height: auto;
     padding-bottom: 80px;
   }
-  .main-title { font-size: 2.8rem; word-break: break-word; }
   .hero-subtext { font-size: 1rem; }
 
-  /* Buttons Stack */
+  /* Buttons: Full Width */
   .btn-wrapper { flex-direction: column; width: 100%; }
   .cta-button, .outline-btn { width: 100%; box-sizing: border-box; text-align: center; }
 
-  /* --- Grids (Single Column) --- */
+  /* Grids: Single Column */
   .cards-grid, .services-grid { grid-template-columns: 1fr; gap: 20px; }
   
-  /* --- Projects --- */
+  /* Projects */
   .projects-grid { grid-template-columns: 1fr; gap: 40px; }
   .project-info { flex-direction: column; align-items: flex-start; gap: 5px; }
 
-  /* --- About & Footer --- */
+  /* About & Footer */
   .about-container { grid-template-columns: 1fr; gap: 30px; }
   .footer-heading { font-size: 2.2rem; }
   .footer-nav { flex-direction: column; gap: 20px; }
