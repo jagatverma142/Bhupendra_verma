@@ -268,12 +268,7 @@ const Projects = () => {
       </section>
 
       {/* Simple CTA Footer */}
-      <footer className="footer-cta minimal-footer">
-        <p>Want to hire me for a project?</p>
-        <a href="mailto:your.email@example.com" className="github-link-btn">
-           Contact Me <ExternalLink size={18} />
-        </a>
-      </footer>
+      
     </div>
   );
 };

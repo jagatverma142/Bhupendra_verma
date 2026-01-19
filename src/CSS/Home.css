@@ -346,20 +346,33 @@ h2 {
 
 
 /* =========================================
-   8. MOBILE RESPONSIVE RULES (FINAL FIXES)
+   8. MOBILE RESPONSIVE RULES (UPDATED & FIXED)
    ========================================= */
+
+/* Tablets (iPad etc.) */
 @media (max-width: 992px) {
-  .cards-grid { grid-template-columns: 1fr 1fr; }
+  .cards-grid, .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
+/* Mobile Phones (Standard) */
 @media (max-width: 768px) {
   
-  /* Layout Spacing */
-  section { padding: 60px 20px; }
+  /* Layout Spacing Fixes */
+  section { 
+    padding: 50px 20px; 
+  }
   
   /* Navbar */
-  .navbar { background: var(--glass-nav); padding: 15px 0; }
-  .nav-container { flex-direction: column; gap: 15px; }
+  .navbar { 
+    background: var(--glass-nav); 
+    padding: 10px 0; 
+  }
+  .nav-container { 
+    flex-direction: column; 
+    gap: 15px; 
+  }
   .nav-links {
     display: flex;
     flex-wrap: wrap;
@@ -367,29 +380,65 @@ h2 {
     gap: 15px;
     margin-top: 5px;
   }
-  .nav-links .link { margin-left: 0; font-size: 13px; }
-
-  /* Hero */
-  .hero-section {
-    padding-top: 150px;
-    min-height: auto;
-    padding-bottom: 80px;
+  .nav-links .link { 
+    margin-left: 0; 
+    font-size: 14px;
+    padding: 5px; 
   }
-  .hero-subtext { font-size: 1rem; }
+
+  /* Hero Section */
+  .hero-section {
+    padding-top: 130px; /* Reduced from 150px to save space */
+    min-height: auto;
+    padding-bottom: 50px;
+  }
+  .hero-subtext { 
+    font-size: 1rem; 
+    margin-bottom: 30px;
+  }
+  
+  /* Main Title Fix */
+  .main-title {
+    font-size: clamp(2rem, 10vw, 3rem); /* Smaller font for mobile */
+  }
 
   /* Buttons: Full Width */
-  .btn-wrapper { flex-direction: column; width: 100%; }
-  .cta-button, .outline-btn { width: 100%; box-sizing: border-box; text-align: center; }
+  .btn-wrapper { 
+    flex-direction: column; 
+    width: 100%; 
+    gap: 15px;
+  }
+  .cta-button, .outline-btn { 
+    width: 100%; 
+    text-align: center; 
+    padding: 12px 24px;
+  }
 
-  /* Grids: Single Column */
-  .cards-grid, .services-grid { grid-template-columns: 1fr; gap: 20px; }
+  /* Grids: Single Column for readability */
+  .cards-grid, .services-grid, .projects-grid, .about-container { 
+    grid-template-columns: 1fr; 
+    gap: 30px; 
+  }
   
-  /* Projects */
-  .projects-grid { grid-template-columns: 1fr; gap: 40px; }
-  .project-info { flex-direction: column; align-items: flex-start; gap: 5px; }
+  /* Projects Image Size Fix */
+  .project-image-wrapper {
+    aspect-ratio: 16 / 9; /* Better ratio for mobile */
+  }
+  .project-info { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 8px; 
+  }
 
-  /* About & Footer */
-  .about-container { grid-template-columns: 1fr; gap: 30px; }
-  .footer-heading { font-size: 2.2rem; }
-  .footer-nav { flex-direction: column; gap: 20px; }
+  /* Footer */
+  .footer-heading { 
+    font-size: 2.2rem; 
+  }
+  .footer-nav { 
+    flex-direction: column; 
+    gap: 20px; 
+  }
+  .footer-cta {
+    padding: 80px 20px;
+  }
 }

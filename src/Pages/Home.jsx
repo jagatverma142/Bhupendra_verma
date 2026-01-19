@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Code, Palette, Layers, MousePointer2, ExternalLink, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { Code, Palette, Layers, MousePointer2, ExternalLink, Linkedin, Instagram, Twitter, ArrowRight } from 'lucide-react';
 import '../CSS/Home.css';
 import profileImg from '../Assets/profile.webp';
 
@@ -13,10 +13,30 @@ const featuresData = [
 ];
 
 const projectsData = [
-  { id: 1, title: "ONLINE COURSES", year: "2023", img: "https://placehold.co/600x400/111/444?text=EdTech+App" },
-  { id: 2, title: "EVENT BOOKING", year: "2023", img: "https://placehold.co/600x400/222/555?text=Event+App" },
-  { id: 3, title: "LIFESTYLE MAGAZINE", year: "2023", img: "https://placehold.co/600x400/333/666?text=Magazine" },
-  { id: 4, title: "PORTFOLIO", year: "2023", img: "https://placehold.co/600x400/444/777?text=Gallery" }
+  { 
+    id: 1, 
+    title: "ONLINE COURSES", 
+    year: "2023", 
+    img: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=800&auto=format&fit=crop" 
+  },
+  { 
+    id: 2, 
+    title: "EVENT BOOKING", 
+    year: "2023", 
+    img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop" 
+  },
+  { 
+    id: 3, 
+    title: "LIFESTYLE MAGAZINE", 
+    year: "2023", 
+    img: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=800&auto=format&fit=crop" 
+  },
+  { 
+    id: 4, 
+    title: "PORTFOLIO", 
+    year: "2023", 
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop" 
+  }
 ];
 
 const servicesData = [
@@ -26,6 +46,7 @@ const servicesData = [
 ];
 
 // --- 2. SUB-COMPONENTS ---
+
 const HeroSection = () => (
   <section className="hero-section">
     <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="availability-badge">
@@ -38,11 +59,18 @@ const HeroSection = () => (
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="hero-subtext">
         Blending artistry with cutting-edge technology to deliver websites that drive results.
       </motion.p>
-      <Link to="/contact">
-        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="cta-button">
-          Schedule a consultation
-        </motion.button>
-      </Link>
+      <div className="btn-wrapper">
+        <Link to="/contact">
+          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="cta-button">
+            Schedule a consultation
+          </motion.button>
+        </Link>
+        <Link to="/projects">
+          <motion.button whileHover={{ scale: 1.05 }} className="outline-btn">
+            View Work
+          </motion.button>
+        </Link>
+      </div>
     </div>
   </section>
 );
@@ -55,7 +83,7 @@ const WhyWorkSection = () => (
     </div>
     <div className="cards-grid">
       {featuresData.map((f, i) => (
-        <motion.div key={i} className="card" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.2 }} whileHover={{ y: -10 }}>
+        <motion.div key={i} className="card" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.2 }} viewport={{ once: true }}>
           <div className="icon-box">{f.icon}</div>
           <h3>{f.title}</h3>
           <p>{f.desc}</p>
@@ -68,36 +96,50 @@ const WhyWorkSection = () => (
 const ProjectsSection = () => (
   <section className="section selected-work">
     <div className="section-header-row">
-      <span className="pill-label">SELECTED WORK</span>
-      <h2>Elevating Brands</h2>
+      <div>
+        <span className="pill-label">SELECTED WORK</span>
+        <h2>Elevating Brands</h2>
+      </div>
     </div>
     <div className="projects-grid">
       {projectsData.map((p) => (
-        <motion.div key={p.id} className="project-card" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} whileHover={{ scale: 1.02 }}>
+        <motion.div key={p.id} className="project-card" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
           <div className="project-image-wrapper">
             <img src={p.img} alt={p.title} />
-            <div className="overlay"><ExternalLink color="#fff" size={40} /></div>
+            <div className="overlay">
+              <Link to="/projects"><ExternalLink color="#fff" size={40} /></Link>
+            </div>
           </div>
-          <div className="project-info"><span>↳ {p.title}</span><span>{p.year}</span></div>
+          <div className="project-info">
+            <span className="project-title">{p.title}</span>
+            <span>{p.year}</span>
+          </div>
         </motion.div>
       ))}
     </div>
-    <div className="center-btn">
-      <Link to="/projects"><button className="outline-btn">↳ Browse all work</button></Link>
+    <div style={{ textAlign: 'center', marginTop: '40px' }}>
+      <Link to="/projects">
+        <button className="outline-btn">View All Projects <ArrowRight size={16} style={{display:'inline', marginLeft:'8px'}} /></button>
+      </Link>
     </div>
   </section>
 );
 
 const ServicesSection = () => (
   <section className="section services">
-    <div className="section-header"><span className="pill-label">SERVICES</span><h2>What I Offer</h2></div>
+    <div className="section-header">
+      <span className="pill-label">SERVICES</span>
+      <h2>What I Offer</h2>
+    </div>
     <div className="services-grid">
       {servicesData.map((s, i) => (
-        <motion.div key={i} className={`service-card ${i === 0 ? 'green-card' : 'dark-card'}`} whileHover={{ y: -5 }}>
+        <motion.div key={i} className={`service-card ${i === 0 ? 'green-card' : 'dark-card'}`} whileHover={{ y: -5 }} viewport={{ once: true }}>
           <div className="service-icon">{s.icon}</div>
           <h3>{s.title}</h3>
-          <p>{s.desc}</p>
-          <ul className="service-list">{s.list.map((item, k) => <li key={k}>{item}</li>)}</ul>
+          <p style={{marginBottom: '20px'}}>{s.desc}</p>
+          <ul className="service-list">
+            {s.list.map((item, k) => <li key={k}>{item}</li>)}
+          </ul>
         </motion.div>
       ))}
     </div>
@@ -108,29 +150,41 @@ const AboutSection = () => (
   <section className="section about">
     <div className="about-container">
       <div className="about-image">
-         <img src={profileImg} alt="Profile" />
+         <img src={profileImg} alt="Bhupendra Verma" />
       </div>
       <div className="about-content">
          <span className="pill-label">ABOUT ME</span>
          <h2>Discover My Journey</h2>
-         <p>Hello! I'm <span className="highlight-text">Bhupendra Verma</span>, a passionate Web Designer & Developer.</p>
-         <div className="social-links">
-            <Linkedin size={20} className="social-icon" />
-            <Instagram size={20} className="social-icon" />
-            <Twitter size={20} className="social-icon" />
+         <p style={{ margin: '20px 0', color: '#a1a1a1', lineHeight: '1.6' }}>
+           Hello! I'm <span className="highlight-text">Bhupendra Verma</span>, a passionate Web Designer & Developer. I specialize in building digital experiences that are not only visually stunning but also highly functional and performant.
+         </p>
+         <div className="social-links" style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+            <a href="#" className="link"><Linkedin size={24} /></a>
+            <a href="#" className="link"><Instagram size={24} /></a>
+            <a href="#" className="link"><Twitter size={24} /></a>
          </div>
       </div>
     </div>
   </section>
 );
 
+// --- ADDED MISSING FOOTER COMPONENT ---
 const FooterSection = () => (
   <footer className="footer-cta">
-    <span className="pill-label">CONTACT</span>
-    <motion.h2 whileHover={{ scale: 1.05 }} className="footer-heading">Let's Turn Ideas<br/>into Reality</motion.h2>
-    <a href="mailto:Bhupendra8171121943@gmail.com" className="email-link">
-      Bhupendra8171121943@gmail.com
-    </a>
+    <p className="pill-label">CONTACT</p>
+    <h2 className="footer-heading">Let's work together</h2>
+    <a href="mailto:hello@bhupendra.com" className="email-link">hello@bhupendra.com</a>
+    
+    <div className="footer-nav">
+      <Link to="/" className="link">Home</Link>
+      <Link to="/projects" className="link">Work</Link>
+      <Link to="/about" className="link">About</Link>
+      <Link to="/contact" className="link">Contact</Link>
+    </div>
+    
+    <div style={{ marginTop: '60px', color: '#555', fontSize: '12px' }}>
+      © {new Date().getFullYear()} Bhupendra Verma. All rights reserved.
+    </div>
   </footer>
 );
 
