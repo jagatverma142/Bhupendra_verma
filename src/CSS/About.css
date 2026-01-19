@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Global Variables (Agar Home.css load nahi ho raha to yahan define hain) */
+  /* Global Variables */
   --primary-green: #a3ff12;  /* Acid Green */
   --bg-dark: #0a0a0a;
   --bg-card: #121212;
@@ -20,13 +20,14 @@ body {
 /* --- 1. HERO SECTION (With Glow) --- */
 .about-hero-section {
   position: relative;
-  height: 10vh;
+  min-height: 40vh; /* Fixed: 10vh bahut chhota tha */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 160px; /* Navbar space */
+  margin-top: 100px; /* Adjusted for flow */
+  padding: 0 20px;
 }
 
 .about-bg-glow {
@@ -47,20 +48,25 @@ body {
 }
 
 .small-title {
-  font-size: 4rem;
+  /* Responsive Font Size */
+  font-size: clamp(2.5rem, 5vw, 4rem);
   line-height: 1.1;
   margin-bottom: 10px;
+  font-weight: 700;
 }
 
 /* --- 2. BIO & STORY SECTION --- */
-.about-container.reversed {
+.about-container {
   display: flex;
-  flex-direction: row-reverse; /* Image Left, Text Right */
-  align-items: flex-start;
+  align-items: center;
   gap: 60px;
   padding: 80px 20px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.about-container.reversed {
+  flex-direction: row-reverse; /* Desktop: Image Left, Text Right */
 }
 
 .about-content {
@@ -80,7 +86,11 @@ body {
 }
 
 /* Profile Image Hover Effect */
-.about-image { flex: 1; display: flex; justify-content: center; }
+.about-image { 
+  flex: 1; 
+  display: flex; 
+  justify-content: center; 
+}
 
 .glow-img {
   width: 100%;
@@ -120,19 +130,30 @@ body {
 }
 
 /* Stats Box */
-.stats-grid { display: flex; gap: 40px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
+.stats-grid { 
+  display: flex; 
+  gap: 40px; 
+  margin-top: 40px; 
+  border-top: 1px solid rgba(255,255,255,0.1); 
+  padding-top: 30px; 
+}
 .stat-box h3 { font-size: 2rem; color: var(--text-white); margin: 0; }
 .stat-box p { font-size: 0.85rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
 
 
 /* --- 3. PROCESS SECTION --- */
-.process-section { background: #050505; } /* Slightly darker bg */
+.process-section { 
+  background: #050505; 
+  padding: 80px 20px; /* Standard Padding */
+} 
 .center-header { text-align: center; margin-bottom: 60px; }
 
 .process-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusted min-width */
   gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .process-card {
@@ -167,6 +188,12 @@ body {
 
 
 /* --- 4. SKILLS SECTION --- */
+.skills-section {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -200,6 +227,12 @@ body {
 
 
 /* --- 5. TIMELINE & EXPERIENCE --- */
+.timeline-section {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .section-header-row {
   display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px;
 }
@@ -229,7 +262,7 @@ body {
 
 .timeline-dot {
   position: absolute;
-  left: -49px;
+  left: -49px; /* Exact alignment */
   top: 5px;
   width: 16px; height: 16px;
   background: var(--bg-dark);
@@ -262,7 +295,8 @@ body {
 
 /* --- 6. CTA BANNER --- */
 .cta-banner {
-  margin: 100px 20px;
+  margin: 100px auto;
+  max-width: 1200px;
   padding: 80px 40px;
   background: linear-gradient(135deg, rgba(163, 255, 18, 0.05) 0%, rgba(0,0,0,0) 100%);
   border: 1px solid rgba(163, 255, 18, 0.15);
@@ -270,6 +304,7 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  width: 90%; /* Responsive width */
 }
 
 .cta-banner::before {
@@ -289,22 +324,68 @@ body {
   font-weight: 700;
   border-radius: 50px;
   cursor: pointer;
+  transition: 0.3s;
+}
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(163, 255, 18, 0.2);
 }
 
 
-/* --- MOBILE RESPONSIVE --- */
+/* --- 7. MOBILE RESPONSIVE RULES (CRITICAL FIXES) --- */
 @media (max-width: 900px) {
-  .about-container.reversed { flex-direction: column; gap: 40px; padding: 40px 20px; }
-  .about-image { width: 100%; }
+  
+  /* Layout: Column Stack */
+  .about-container, 
+  .about-container.reversed { 
+    flex-direction: column; /* Image top, Text bottom */
+    gap: 40px; 
+    padding: 60px 20px; 
+  }
+  
+  .about-image { width: 100%; margin-bottom: 20px; }
   .about-image img { width: 100%; max-width: 100%; }
   
-  .small-title { font-size: 2.5rem; }
+  /* Headers */
+  .section-header-row { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 20px; 
+  }
   
-  .section-header-row { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .resume-btn { width: 100%; justify-content: center; }
+  .resume-btn { 
+    width: 100%; 
+    justify-content: center; 
+  }
   
-  .timeline { margin-left: 10px; padding-left: 30px; }
-  .timeline-dot { left: -39px; }
+  /* Grids: Single Column for Mobile */
+  .process-grid, .skills-grid {
+      grid-template-columns: 1fr;
+  }
   
-  .stats-grid { flex-wrap: wrap; gap: 30px; }
+  /* Timeline Fixes for Mobile */
+  .timeline { 
+    margin-left: 0; 
+    padding-left: 30px; /* Space for dots */
+  }
+  .timeline-dot { 
+    left: -39px; /* Adjust dot position for smaller padding */
+  }
+  .timeline-item:hover .timeline-content {
+      transform: none; /* Mobile par slide effect off */
+  }
+  
+  /* Stats */
+  .stats-grid { 
+    flex-direction: column; 
+    gap: 20px; 
+    text-align: center;
+  }
+  
+  /* CTA Banner */
+  .cta-banner {
+      width: 95%;
+      padding: 50px 20px;
+  }
+  .cta-content h2 { font-size: 1.8rem; }
 }

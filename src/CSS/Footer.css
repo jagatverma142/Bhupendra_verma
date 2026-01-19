@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --neon-green: #a3ff12;
+  /* Consistent Variables with previous sections */
+  --primary-green: #a3ff12; 
   --bg-dark: #0a0a0a;
   --text-grey: #888888;
   --text-white: #ffffff;
@@ -11,7 +14,8 @@
   color: var(--text-white);
   padding: 80px 20px 40px;
   overflow: hidden;
-  font-family: 'Inter', sans-serif; /* Replace with your font */
+  font-family: 'Poppins', sans-serif;
+  border-top: 1px solid rgba(255,255,255,0.05); /* Subtle border top */
 }
 
 /* --- Animated Glow Background --- */
@@ -29,13 +33,13 @@
 .footer-glow {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(163, 255, 18, 0.15) 0%, rgba(10, 10, 10, 0) 70%);
+  background: radial-gradient(circle, rgba(163, 255, 18, 0.1) 0%, rgba(10, 10, 10, 0) 70%);
   border-radius: 50%;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  filter: blur(80px);
+  filter: blur(100px);
+  opacity: 0.5;
 }
 
 .footer-container {
@@ -62,25 +66,32 @@
 .pill-label {
   font-size: 12px;
   font-weight: 700;
-  color: var(--neon-green);
-  border: 1px solid var(--neon-green);
-  padding: 6px 12px;
+  color: var(--primary-green);
+  border: 1px solid rgba(163, 255, 18, 0.3);
+  padding: 6px 14px;
   border-radius: 20px;
   display: inline-block;
   margin-bottom: 20px;
+  letter-spacing: 1px;
 }
 
 .footer-heading {
-  font-size: 3rem;
+  /* Responsive Font Size using clamp */
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   line-height: 1.1;
   font-weight: 700;
   margin-bottom: 30px;
+  background: linear-gradient(to bottom, #fff, #999);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .stroke-text {
+  /* Optional: Agar aapko outline text chahiye */
   color: transparent;
   -webkit-text-stroke: 1px var(--text-white);
   font-style: italic;
+  opacity: 0.3;
 }
 
 /* Email & Copy Button */
@@ -88,35 +99,40 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  margin-top: 10px;
 }
 
 .footer-email {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-grey);
   text-decoration: none;
   transition: color 0.3s ease;
+  font-weight: 500;
 }
 
 .footer-email:hover {
-  color: var(--neon-green);
+  color: var(--primary-green);
 }
 
 .copy-btn {
   background: rgba(255,255,255,0.05);
-  border: none;
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-white);
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .copy-btn:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(163, 255, 18, 0.1);
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+  transform: scale(1.1);
 }
 
 /* --- Navigation & Socials --- */
@@ -130,6 +146,7 @@
   color: var(--text-white);
   margin-bottom: 25px;
   font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .link-column {
@@ -154,12 +171,12 @@
   height: 1px;
   bottom: -2px;
   left: 0;
-  background-color: var(--neon-green);
+  background-color: var(--primary-green);
   transition: width 0.3s ease-in-out;
 }
 
 .footer-link:hover {
-  color: var(--text-white);
+  color: var(--primary-green);
 }
 
 .footer-link:hover::after {
@@ -176,24 +193,26 @@
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-white);
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .social-icon-box:hover {
-  border-color: var(--neon-green);
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+  transform: translateY(-3px);
 }
 
 /* --- Footer Bottom --- */
 .footer-divider {
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
   margin-bottom: 30px;
 }
 
@@ -204,7 +223,7 @@
 }
 
 .copyright {
-  color: var(--text-grey);
+  color: #555;
   font-size: 0.9rem;
 }
 
@@ -216,8 +235,8 @@
 }
 
 .heart-icon {
-  fill: var(--neon-green);
-  color: var(--neon-green);
+  fill: var(--primary-green);
+  color: var(--primary-green);
   animation: heartbeat 1.5s infinite;
 }
 
@@ -225,13 +244,18 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: var(--neon-green);
+  background-color: var(--primary-green);
   border: none;
   color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.scroll-top-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(163, 255, 18, 0.4);
 }
 
 /* --- Animations --- */
@@ -241,24 +265,47 @@
   100% { transform: scale(1); }
 }
 
-/* --- Responsive Media Queries --- */
-@media (max-width: 768px) {
-  .footer-top {
-    flex-direction: column;
-    gap: 40px;
+/* --- RESPONSIVE MEDIA QUERIES (UPDATED LOGIC) --- */
+@media (max-width: 900px) {
+  .footer-section {
+    padding: 60px 20px 30px;
   }
 
-  .footer-heading {
-    font-size: 2.2rem;
-  }
-  
-  .footer-nav-wrapper {
+  .footer-top {
     flex-direction: column;
+    gap: 50px;
+  }
+
+  /* Navigation Layout for Tablet/Mobile */
+  .footer-nav-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 Columns for better space usage */
     gap: 40px;
+    width: 100%;
   }
 
   .footer-bottom {
     flex-direction: column-reverse;
-    gap: 20px;
+    gap: 25px;
+    text-align: center;
+  }
+  
+  .footer-heading {
+      font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-nav-wrapper {
+    grid-template-columns: 1fr; /* Stack links on very small screens */
+    gap: 30px;
+  }
+  
+  .footer-email {
+      font-size: 1rem;
+  }
+  
+  .copy-btn {
+      width: 40px; height: 40px;
   }
 }

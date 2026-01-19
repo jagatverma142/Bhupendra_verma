@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-neon: #00ffcc;
-  --secondary-glow: #0099ff;
+  /* --- Global Variables (Matches other files) --- */
+  --primary-green: #a3ff12; /* Updated from Neon to Green */
   --gold-accent: #FFD700;
-  --glass-bg: rgba(18, 18, 18, 0.85);
+  --glass-bg: rgba(10, 10, 10, 0.95);
   --text-main: #ffffff;
   --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* --- 1. NAVBAR CONTAINER --- */
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 30px 0;
-  z-index: 1000;
+  padding: 25px 0; /* Slightly reduced for cleaner look */
+  z-index: 9999; /* Highest priority */
   transition: var(--transition-smooth);
   font-family: 'Poppins', sans-serif;
   background: transparent;
@@ -31,27 +32,28 @@
 }
 
 .nav-container {
-  max-width: 1300px;
+  max-width: 1200px; /* Standard width matching other sections */
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* --- Logo Section --- */
+/* --- 2. LOGO SECTION --- */
 .nav-logo {
   display: flex;
   align-items: center;
   gap: 15px;
   flex-shrink: 0;
+  text-decoration: none; /* Removes underline from link */
 }
 
 .logo-box {
   position: relative;
-  width: 50px;
-  height: 50px;
-  border: 2px solid var(--gold-accent);
+  width: 45px; /* Slightly compact */
+  height: 45px;
+  border: 2px solid var(--primary-green); /* Changed to Green */
   border-radius: 12px;
   display: flex;
   justify-content: center;
@@ -60,16 +62,16 @@
 }
 
 .logo-char {
-  color: var(--gold-accent);
-  font-weight: 800;
-  font-size: 24px;
+  color: var(--primary-green);
+  font-weight: 700;
+  font-size: 22px;
 }
 
 .logo-glow {
   position: absolute;
   width: 100%; height: 100%;
   border-radius: 12px;
-  box-shadow: 0 0 15px var(--gold-accent);
+  box-shadow: 0 0 15px var(--primary-green);
   opacity: 0.3;
   animation: pulse 2s infinite;
 }
@@ -81,11 +83,12 @@
 }
 
 .logo-text h1 {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   margin: 0;
   color: var(--text-main);
   white-space: nowrap;
   letter-spacing: 0.5px;
+  font-weight: 700;
 }
 
 .logo-text p {
@@ -96,7 +99,7 @@
   text-transform: uppercase;
 }
 
-/* --- Nav Menu & Links --- */
+/* --- 3. NAV MENU & LINKS --- */
 .nav-menu {
   display: flex;
   align-items: center;
@@ -117,90 +120,120 @@
   font-size: 15px;
   position: relative;
   transition: 0.3s;
+  padding: 5px 0;
 }
 
 .link:hover, .link.active {
-  color: var(--primary-neon);
-  text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+  color: var(--primary-green);
 }
 
 .link::after {
   content: '';
   position: absolute;
   width: 0; height: 2px;
-  bottom: -6px; left: 0;
-  background: linear-gradient(90deg, var(--primary-neon), var(--secondary-glow));
+  bottom: 0; left: 0;
+  background: var(--primary-green);
   transition: 0.4s;
 }
 
 .link:hover::after, .link.active::after { width: 100%; }
 
-/* --- CTA Button --- */
+/* --- 4. CTA BUTTON --- */
 .contact-btn {
   background: transparent;
-  border: 1px solid var(--primary-neon);
-  padding: 10px 25px;
-  border-radius: 15px;
-  color: var(--primary-neon);
-  font-weight: 100;
+  border: 1px solid var(--primary-green);
+  padding: 10px 24px;
+  border-radius: 50px; /* Fully rounded to match other buttons */
+  color: var(--primary-green);
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: var(--transition-smooth);
 }
 
 .contact-btn:hover {
-  background: var(--primary-neon);
+  background: var(--primary-green);
   color: #000;
-  box-shadow: 0 0 20px var(--primary-neon);
-  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(163, 255, 18, 0.4);
+  transform: translateY(-2px);
 }
 
-/* --- Mobile Responsive (Hamburger) --- */
+/* --- 5. MOBILE RESPONSIVE (HAMBURGER) --- */
 .hamburger {
   display: none;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
   cursor: pointer;
+  z-index: 1001; /* Above mobile menu overlay */
 }
 
 .bar {
-  width: 30px; height: 3px;
+  width: 28px; height: 3px;
   background: #fff;
   border-radius: 5px;
   transition: 0.4s;
 }
 
+/* Mobile Rules */
 @media (max-width: 992px) {
-  .hamburger { display: flex; z-index: 1001; }
+  .hamburger { display: flex; }
   
-  .hamburger.toggle .bar:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+  /* Hamburger Animation */
+  .hamburger.toggle .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); background: var(--primary-green); }
   .hamburger.toggle .bar:nth-child(2) { opacity: 0; }
-  .hamburger.toggle .bar:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+  .hamburger.toggle .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); background: var(--primary-green); }
 
   .nav-menu {
     position: fixed;
     top: 0; right: -100%;
-    height: 100vh; width: 300px;
+    height: 100vh; 
+    width: 100%; /* Full width on mobile for better focus */
+    max-width: 100%;
     background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: center;
-    transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+    align-items: center;
+    transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 1000;
   }
 
   .nav-menu.active { right: 0; }
 
-  .nav-links { flex-direction: column; align-items: center; gap: 35px; }
+  .nav-links { 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 40px; /* More space for touch */
+  }
+
+  .link {
+    font-size: 1.5rem; /* Larger text for mobile */
+    color: #fff;
+  }
+  
+  .contact-btn {
+      margin-top: 20px;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+  }
 
   /* Staggered Slide Animation for Mobile Links */
-  .nav-menu.active .nav-links li, 
-  .nav-menu.active .nav-cta {
+  .nav-menu.active .link, 
+  .nav-menu.active .contact-btn {
     animation: menuSlideIn 0.5s ease forwards;
-    animation-delay: calc(var(--i) * 0.1s);
     opacity: 0;
   }
+  
+  /* Delays for each item (assumes 4 links + button) */
+  .nav-menu.active li:nth-child(1) .link { animation-delay: 0.1s; }
+  .nav-menu.active li:nth-child(2) .link { animation-delay: 0.2s; }
+  .nav-menu.active li:nth-child(3) .link { animation-delay: 0.3s; }
+  .nav-menu.active li:nth-child(4) .link { animation-delay: 0.4s; }
+  .nav-menu.active .contact-btn { animation-delay: 0.5s; }
 }
 
 @keyframes menuSlideIn {
-  from { transform: translateX(50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

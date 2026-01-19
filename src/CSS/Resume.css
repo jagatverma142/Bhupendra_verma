@@ -1,21 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
+  /* --- Brand Colors (Consistent with other pages) --- */
   --primary-green: #a3ff12;
-  --primary-cyan: #00f0ff;
   --bg-dark: #0a0a0a;
   --bg-card: #121212;
+  --text-white: #ffffff;
+  --text-gray: #a1a1a1;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
 }
 
 /* --- HERO SECTION --- */
 .resume-hero {
   position: relative;
-  min-height: 45vh;
+  min-height: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 60px;
+  margin-top: 120px; /* Fixed: Added space for Navbar */
   overflow: hidden;
   padding: 40px 20px;
 }
@@ -24,14 +33,14 @@
 .resume-bg-orb {
   position: absolute;
   width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(163, 255, 18, 0.12) 0%, transparent 70%); /* Green Glow */
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
-  animation: pulseCyan 6s infinite alternate;
+  animation: pulseGreen 6s infinite alternate;
 }
 
-@keyframes pulseCyan {
+@keyframes pulseGreen {
   0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
   100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
 }
@@ -45,21 +54,37 @@
   mask-image: radial-gradient(circle, black 40%, transparent 80%);
 }
 
-.stroke-text { -webkit-text-stroke: 1px var(--primary-cyan); color: transparent; font-weight: 800; }
-.glow-text { text-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+.main-title {
+  /* Responsive Font Size */
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.stroke-text { 
+    -webkit-text-stroke: 1px var(--primary-green); 
+    color: transparent; 
+    font-weight: 800; 
+}
+.glow-text { text-shadow: 0 0 15px rgba(163, 255, 18, 0.4); }
 
 /* Download Button */
 .download-btn-dynamic {
   display: inline-flex; align-items: center; gap: 10px;
-  background: linear-gradient(45deg, var(--primary-cyan), #0099ff);
+  background: linear-gradient(45deg, var(--primary-green), #80c900);
   color: #000;
   padding: 15px 35px;
   border-radius: 50px;
   text-decoration: none;
   font-weight: 700;
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+  box-shadow: 0 0 25px rgba(163, 255, 18, 0.25);
   transition: all 0.4s ease;
   margin-top: 20px;
+}
+.download-btn-dynamic:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 35px rgba(163, 255, 18, 0.4);
 }
 
 /* --- GRID LAYOUT --- */
@@ -67,7 +92,7 @@
 
 .resume-grid-layout {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.5fr 1fr; /* Left (Timeline) is wider */
   gap: 60px;
   max-width: 1200px;
   margin: 0 auto;
@@ -80,7 +105,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
   padding-bottom: 15px;
 }
-.title-icon { color: var(--primary-cyan); }
+.title-icon { color: var(--primary-green); }
 
 /* --- LEFT COLUMN: TIMELINE --- */
 .timeline-container { position: relative; }
@@ -89,21 +114,32 @@
 .timeline-line-track {
   position: absolute;
   left: 0; top: 15px; bottom: 0; width: 2px;
-  background: var(--primary-cyan);
-  box-shadow: 0 0 8px var(--primary-cyan);
+  background: var(--primary-green);
+  box-shadow: 0 0 8px var(--primary-green);
   transform-origin: top;
 }
 
-.timeline-item-dynamic { position: relative; margin-bottom: 50px; padding-left: 30px; }
+.timeline-item-dynamic { 
+    position: relative; 
+    margin-bottom: 50px; 
+    padding-left: 35px; /* Space for line */
+}
 
 .timeline-dot-dynamic {
-  position: absolute; left: -37px; top: 6px;
-  width: 14px; height: 14px;
+  position: absolute; 
+  left: -7px; /* (Dot Width 16px / 2) - (Line Width 2px / 2) adjusted relative to padding */
+  top: 6px;
+  width: 16px; height: 16px;
   background: var(--bg-dark);
-  border: 3px solid var(--primary-cyan);
+  border: 3px solid var(--primary-green);
   border-radius: 50%;
   z-index: 2;
   transition: 0.3s;
+}
+
+/* Fix: Dot positioning Logic relative to track at left:0 */
+.timeline-container .timeline-dot-dynamic {
+    left: -7px; 
 }
 
 .timeline-card-content {
@@ -113,16 +149,19 @@
   border: 1px solid rgba(255,255,255,0.05);
   transition: 0.3s;
 }
+.timeline-item-dynamic:hover .timeline-card-content {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(163, 255, 18, 0.3);
+}
 
 /* Role Visibility Helpers */
-.mobile-role { display: none; }
 .desktop-role { display: block; margin-bottom: 10px; }
 .desktop-role h3 { font-size: 1.3rem; color: #fff; margin: 0; }
 .desktop-role h4 { font-size: 1rem; color: #888; font-weight: 400; margin: 2px 0 0 0; }
 
 .resume-date {
   display: inline-block;
-  background: rgba(0, 240, 255, 0.08); color: var(--primary-cyan);
+  background: rgba(163, 255, 18, 0.08); color: var(--primary-green);
   font-size: 0.75rem; font-weight: 600; padding: 4px 10px;
   border-radius: 4px; margin-bottom: 15px;
 }
@@ -148,7 +187,7 @@
   margin-bottom: 20px;
   transition: 0.3s;
 }
-.edu-card-dynamic:hover { border-color: var(--primary-cyan); }
+.edu-card-dynamic:hover { border-color: var(--primary-green); }
 
 .edu-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
 .edu-header h3 { font-size: 1rem; color: #fff; margin: 0; }
@@ -171,68 +210,55 @@
 }
 
 .resume-tag.outline { background: transparent; border-color: rgba(255,255,255,0.15); }
+.resume-tag:hover { border-color: var(--primary-green); color: #fff; }
 
 
 /* =========================================
-   MOBILE RESPONSIVENESS (The Key Update)
+   MOBILE RESPONSIVENESS (FIXED)
    ========================================= */
 
 @media (max-width: 968px) {
   .resume-grid-layout { 
-    grid-template-columns: 1fr; /* Stack columns */
+    grid-template-columns: 1fr; /* Single Column Stack */
     gap: 50px; 
   }
 }
 
 @media (max-width: 768px) {
   .resume-hero { min-height: auto; padding-top: 20px; }
-  .main-title { font-size: 2.5rem; }
   
-  /* Timeline Mobile Readjustment */
+  /* Timeline Mobile Adjustments */
   .timeline-container { 
-    padding-left: 0; /* Remove old padding */
     margin-left: 0;
   }
   
-  /* Move line to far left */
-  .timeline-line-track { left: 10px; }
+  /* Timeline Line Position (Left Edge) */
+  .timeline-line-track { 
+      left: 10px; 
+  }
   
-  /* Center dots on the new line position */
-  .timeline-dot-dynamic { left: 3px; }
-  
-  /* Push content to the right of the line */
+  /* Content shift to right */
   .timeline-item-dynamic { 
-    padding-left: 35px; /* Space for line */
+    padding-left: 40px; 
     margin-bottom: 40px;
+  }
+  
+  /* Dot Alignment on Mobile Line */
+  .timeline-container .timeline-dot-dynamic { 
+      left: 3px; /* (Line Left 10px) - (Dot center offset) */
   }
   
   .timeline-card-content { padding: 20px; }
   
-  /* Mobile Header Row adjustments */
-  .card-header-row {
-    display: flex;
-    flex-direction: column-reverse; /* Date above role looks better on mobile? Or below */
-    align-items: flex-start;
-    gap: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .resume-date { margin-bottom: 5px; }
-  
-  /* Switch role visibility */
-  .desktop-role { display: none; }
-  .mobile-role { display: block; }
-  .mobile-role h3 { font-size: 1.2rem; color: #fff; margin: 0; }
-  .mobile-role h4 { font-size: 0.95rem; color: #888; margin: 0; }
+  /* Mobile Header Adjustments */
+  .desktop-role h3 { font-size: 1.1rem; }
+  .download-btn-dynamic { width: 100%; justify-content: center; }
 }
 
 @media (max-width: 480px) {
-  .main-title { font-size: 2rem; }
-  .download-btn-dynamic { width: 100%; justify-content: center; }
-  
-  .timeline-item-dynamic { padding-left: 25px; }
+  .timeline-item-dynamic { padding-left: 30px; }
   .timeline-line-track { left: 5px; }
-  .timeline-dot-dynamic { left: -2px; width: 12px; height: 12px; }
+  .timeline-container .timeline-dot-dynamic { left: -2px; } /* Re-align for thinner margin */
   
   .task-list li { font-size: 0.85rem; }
 }

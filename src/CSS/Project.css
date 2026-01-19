@@ -7,25 +7,30 @@
   --text-white: #ffffff;
   --text-gray: #a1a1a1;
 }
-.body{
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-white);
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+  overflow-x: hidden; /* Horizontal scroll prevent */
 }
-/* --- HERO --- */
+
+/* --- HERO SECTION --- */
 .projects-hero {
   position: relative;
-  min-height: 45vh;
+  min-height: 40vh; /* Thoda compact kiya */
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 160px;
-  padding: 0px 320px;
-
+  margin-top: 120px; /* Navbar gap adjust */
+  padding: 0 20px; /* Fixed: 320px padding hata di */
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .bg-blur-orb {
@@ -43,16 +48,25 @@
     100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
 }
 
+.main-title {
+  /* Responsive Font Size */
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
 .stroke-text {
   -webkit-text-stroke: 1px var(--primary-green);
   color: transparent;
   font-weight: 800;
 }
 
-/* --- FILTER SYSTEM (Responsive) --- */
+/* --- FILTER SYSTEM --- */
 .filter-wrapper {
   margin-bottom: 50px;
   text-align: center;
+  width: 100%;
+  padding: 0 20px;
 }
 
 .filter-header {
@@ -77,6 +91,7 @@
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
+  white-space: nowrap; /* Text break nahi hoga */
 }
 
 .filter-btn:hover {
@@ -96,9 +111,12 @@
 /* --- GRID SYSTEM --- */
 .projects-display-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Smart Responsive Grid */
+  /* Fixed: 320px -> 280px for smaller phones */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 30px;
-  padding-bottom: 80px;
+  padding: 0 20px 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .project-display-card {
@@ -133,9 +151,9 @@
 
 .status-badge {
     position: absolute; top: 15px; left: 15px;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.8);
     color: var(--primary-green);
-    border: 1px solid var(--primary-green);
+    border: 1px solid rgba(163, 255, 18, 0.3);
     font-size: 10px; font-weight: 700;
     padding: 4px 10px; border-radius: 4px;
     text-transform: uppercase;
@@ -235,25 +253,41 @@
 .github-link-btn:hover { gap: 12px; text-shadow: 0 0 8px var(--primary-green); }
 
 
-/* --- MOBILE FIXES --- */
+/* --- MOBILE RESPONSIVE RULES --- */
 @media (max-width: 768px) {
-  .projects-hero { min-height: 30vh; margin-top: 80px; }
-  .main-title { font-size: 2.5rem; }
   
+  .projects-hero { 
+    margin-top: 100px; 
+    padding: 0 20px; /* Padding reset */
+  }
+
+  /* Filters: Horizontal Scroll (YouTube Style) */
   .filter-buttons {
       flex-wrap: nowrap;
       overflow-x: auto;
       justify-content: flex-start;
-      padding-bottom: 15px;
+      padding-bottom: 10px;
       width: 100%;
-      -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+      -webkit-overflow-scrolling: touch; /* Smooth scroll */
+      scrollbar-width: none; /* Firefox hide scrollbar */
   }
   
-  /* Hide Scrollbar for filters but allow scroll */
-  .filter-buttons::-webkit-scrollbar { height: 4px; }
-  .filter-buttons::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+  .filter-buttons::-webkit-scrollbar { display: none; } /* Chrome hide scrollbar */
 
-  .filter-btn { white-space: nowrap; font-size: 13px; padding: 8px 18px; }
+  .filter-btn { 
+    font-size: 13px; 
+    padding: 8px 20px; 
+    flex-shrink: 0; /* Button shrink nahi hoga */
+  }
   
-  .projects-display-grid { grid-template-columns: 1fr; gap: 20px; }
+  /* Grid Stack */
+  .projects-display-grid { 
+    grid-template-columns: 1fr; 
+    gap: 30px; 
+  }
+  
+  /* Hover Effect on Mobile (Always Visible Actions optional) */
+  .project-display-card:active .card-actions {
+      opacity: 1;
+  }
 }
