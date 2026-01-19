@@ -116,8 +116,8 @@ const Resume = () => {
           </h1>
           
           <motion.a 
-            href="/path-to-your-cv.pdf" 
-            download="Bhupendra_Verma_Resume.pdf"
+            href="https://drive.google.com/file/d/1n3SiQLD5OFnICtGfyWXoOKcoXGodLvEy/view?usp=sharing" 
+            download="BHupendra_Verma.pdf"
             className="download-btn-dynamic"
             whileHover={{ scale: 1.05, paddingLeft: "40px", paddingRight: "40px" }}
             whileTap={{ scale: 0.95 }}
@@ -254,11 +254,6 @@ const Resume = () => {
           </div>
         </div>
       </section>
-
-      <footer className="footer-cta minimal-footer">
-        <p>Looking for the full story?</p>
-        <a href="/projects" className="github-link-btn">View Portfolio Work</a>
-      </footer>
     </div>
   );
 };
