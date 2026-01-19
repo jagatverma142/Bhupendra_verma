@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from './Components/Navbar'; // Ensure Navbar.jsx file exists here
 import Bhupendra_verma from './Pages/Bhupendra_verma';
 import About from './Pages/About';
