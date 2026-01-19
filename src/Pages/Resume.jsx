@@ -116,7 +116,7 @@ const Resume = () => {
           </h1>
           
           <motion.a 
-            href="https://drive.google.com/file/d/1n3SiQLD5OFnICtGfyWXoOKcoXGodLvEy/view?usp=sharing" 
+            href="https://jagatverma142.github.io/Bhupendra_verma/resume.pdf" 
             download="BHupendra_Verma.pdf"
             className="download-btn-dynamic"
             whileHover={{ scale: 1.05, paddingLeft: "40px", paddingRight: "40px" }}
