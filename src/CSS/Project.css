@@ -14,20 +14,20 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-white);
-  overflow-x: hidden; /* Horizontal scroll prevent */
+  overflow-x: hidden; /* Prevent horizontal scroll on body */
 }
 
 /* --- HERO SECTION --- */
 .projects-hero {
   position: relative;
-  min-height: 40vh; /* Thoda compact kiya */
+  min-height: 40vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 120px; /* Navbar gap adjust */
-  padding: 0 20px; /* Fixed: 320px padding hata di */
+  margin-top: 100px; /* Fixed Navbar Gap */
+  padding: 0 20px; /* Reset padding to standard */
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -49,10 +49,11 @@ body {
 }
 
 .main-title {
-  /* Responsive Font Size */
+  /* Responsive Font Size: Mobile pe 2.5rem, Desktop pe 4rem */
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
   margin-bottom: 10px;
+  line-height: 1.1;
 }
 
 .stroke-text {
@@ -111,7 +112,7 @@ body {
 /* --- GRID SYSTEM --- */
 .projects-display-grid {
   display: grid;
-  /* Fixed: 320px -> 280px for smaller phones */
+  /* Min width 280px ensures it fits on small phones without breaking */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 30px;
   padding: 0 20px 80px 20px;
@@ -253,23 +254,24 @@ body {
 .github-link-btn:hover { gap: 12px; text-shadow: 0 0 8px var(--primary-green); }
 
 
-/* --- MOBILE RESPONSIVE RULES --- */
+/* --- MOBILE RESPONSIVE RULES (FIXED) --- */
 @media (max-width: 768px) {
   
   .projects-hero { 
     margin-top: 100px; 
-    padding: 0 20px; /* Padding reset */
+    padding: 0 20px; 
   }
 
-  /* Filters: Horizontal Scroll (YouTube Style) */
+  /* Filters: Scrollable on Mobile (YouTube Style) */
   .filter-buttons {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      justify-content: flex-start;
+      flex-wrap: nowrap; /* Prevent stacking */
+      overflow-x: auto; /* Enable scroll */
+      justify-content: flex-start; /* Align left for scroll */
       padding-bottom: 10px;
       width: 100%;
       -webkit-overflow-scrolling: touch; /* Smooth scroll */
       scrollbar-width: none; /* Firefox hide scrollbar */
+      mask-image: linear-gradient(to right, black 85%, transparent 100%); /* Fade effect edge */
   }
   
   .filter-buttons::-webkit-scrollbar { display: none; } /* Chrome hide scrollbar */
@@ -280,13 +282,13 @@ body {
     flex-shrink: 0; /* Button shrink nahi hoga */
   }
   
-  /* Grid Stack */
+  /* Grid: Force Single Column on Mobile */
   .projects-display-grid { 
     grid-template-columns: 1fr; 
     gap: 30px; 
   }
   
-  /* Hover Effect on Mobile (Always Visible Actions optional) */
+  /* Make Card Action Visible on Tap for Mobile */
   .project-display-card:active .card-actions {
       opacity: 1;
   }
