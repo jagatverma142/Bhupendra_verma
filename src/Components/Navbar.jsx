@@ -9,7 +9,7 @@ const Navbar = () => {
 
   // Dynamic Navigation Items
   const navItems = [
-    { name: 'Home', path: 'Home' },
+    { name: 'Home', path: '/Bhupendra_verma/#/Home' },
     { name: 'About', path: '/about' },
     { name: 'Projects', path: '/projects' },
     { name: 'Services', path: '/services' },
