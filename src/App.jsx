@@ -1,9 +1,9 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from './Components/Navbar'; // Ensure Navbar.jsx file exists here
-import Bhupendra_verma from './Pages/Bhupendra_verma';
 import About from './Pages/About';
 import Projects from './Pages/Projects';
+import Home from './Pages/Home';
 import './index.css';
 import Services from './Pages/Services';
 import Contact from './Pages/Contact';
@@ -17,7 +17,7 @@ function App() {
       <Navbar /> 
       
       <Routes>
-        <Route path="/Bhupendra_verma/#/Home" element={<Bhupendra_verma />} />
+        <Route path="/Home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/Projects" element={<Projects />} />
         <Route path="/Services" element={<Services />} />
