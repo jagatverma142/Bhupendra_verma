@@ -170,7 +170,7 @@ const AboutSection = () => (
 
 
 // --- MAIN EXPORT ---
-const Home = () => (
+const Bhupendra_verma = () => (
   <>
     <HeroSection />
     <WhyWorkSection />
@@ -180,4 +180,4 @@ const Home = () => (
   </>
 );
 
-export default Home;
+export default Bhupendra_verma;
