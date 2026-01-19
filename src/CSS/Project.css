@@ -26,8 +26,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 100px; /* Fixed Navbar Gap */
-  padding: 0 20px; /* Reset padding to standard */
+  margin-top: 100px; /* Desktop default */
+  padding: 0 20px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -49,7 +49,6 @@ body {
 }
 
 .main-title {
-  /* Responsive Font Size: Mobile pe 2.5rem, Desktop pe 4rem */
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
   margin-bottom: 10px;
@@ -92,7 +91,7 @@ body {
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
-  white-space: nowrap; /* Text break nahi hoga */
+  white-space: nowrap;
 }
 
 .filter-btn:hover {
@@ -112,7 +111,6 @@ body {
 /* --- GRID SYSTEM --- */
 .projects-display-grid {
   display: grid;
-  /* Min width 280px ensures it fits on small phones without breaking */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 30px;
   padding: 0 20px 80px 20px;
@@ -254,42 +252,82 @@ body {
 .github-link-btn:hover { gap: 12px; text-shadow: 0 0 8px var(--primary-green); }
 
 
-/* --- MOBILE RESPONSIVE RULES (FIXED) --- */
+/* =========================================
+   MOBILE RESPONSIVE FIXES (UPDATED)
+   ========================================= */
 @media (max-width: 768px) {
   
-  .projects-hero { 
-    margin-top: 100px; 
-    padding: 0 20px; 
+  /* 1. Navbar Fixes (Compact & Dark) */
+  .navbar {
+    padding: 15px 0;
+    background: rgba(10, 10, 10, 0.95); /* Dark background fix */
+    backdrop-filter: blur(10px);
   }
 
-  /* Filters: Scrollable on Mobile (YouTube Style) */
-  .filter-buttons {
-      flex-wrap: nowrap; /* Prevent stacking */
-      overflow-x: auto; /* Enable scroll */
-      justify-content: flex-start; /* Align left for scroll */
-      padding-bottom: 10px;
-      width: 100%;
-      -webkit-overflow-scrolling: touch; /* Smooth scroll */
-      scrollbar-width: none; /* Firefox hide scrollbar */
-      mask-image: linear-gradient(to right, black 85%, transparent 100%); /* Fade effect edge */
+  .nav-container {
+    padding: 0 20px;
+    flex-wrap: nowrap;
+  }
+
+  /* Logo Adjustments */
+  .logo-text h1 { font-size: 1rem; }
+  .logo-text p { display: none; } /* Hide tagline to save space */
+
+  /* 2. Hero Section Adjustments */
+  .projects-hero { 
+    margin-top: 90px; /* Reduced gap for compact navbar */
+    min-height: auto;
+    padding-bottom: 40px;
+  }
+
+  .main-title {
+    font-size: 2.8rem;
+    line-height: 1;
+    display: flex;
+    flex-direction: column; /* Stack "My Recent" and "Projects" */
+    gap: 5px;
   }
   
-  .filter-buttons::-webkit-scrollbar { display: none; } /* Chrome hide scrollbar */
+  .stroke-text {
+    font-size: 3rem;
+    opacity: 0.5;
+  }
+
+  /* 3. Filters: Horizontal Scroll (YouTube Style) */
+  .filter-wrapper { padding: 0 15px; margin-bottom: 30px; }
+
+  .filter-buttons {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: flex-start;
+      gap: 10px;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+  }
+  
+  .filter-buttons::-webkit-scrollbar { display: none; } /* Hide scrollbar */
 
   .filter-btn { 
     font-size: 13px; 
-    padding: 8px 20px; 
-    flex-shrink: 0; /* Button shrink nahi hoga */
+    padding: 8px 18px; 
+    flex-shrink: 0;
   }
   
-  /* Grid: Force Single Column on Mobile */
+  /* 4. Grid & Cards */
   .projects-display-grid { 
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr; /* Single Column */
     gap: 30px; 
+    padding: 0 20px 60px 20px;
   }
   
-  /* Make Card Action Visible on Tap for Mobile */
-  .project-display-card:active .card-actions {
-      opacity: 1;
+  .project-display-card {
+      width: 100%;
+      margin: 0 auto;
   }
+
+  .card-image-box {
+      height: 200px; /* Fixed height for consistency */
+  }
+
+  .card-content h3 { font-size: 1.3rem; }
 }
