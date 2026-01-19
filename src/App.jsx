@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar'; // Ensure Navbar.jsx file exists here
-import Home from './Pages/Home';
+import Bhupendra_verma from './Pages/Bhupendra_verma';
 import About from './Pages/About';
 import Projects from './Pages/Projects';
 import './index.css';
@@ -17,7 +17,7 @@ function App() {
       <Navbar /> 
       
       <Routes>
-        <Route path="/Bhupendra_verma/" element={<Home />} />
+        <Route path="/Bhupendra_verma/" element={<Bhupendra_verma />} />
         <Route path="/about" element={<About />} />
         <Route path="/Projects" element={<Projects />} />
         <Route path="/Services" element={<Services />} />

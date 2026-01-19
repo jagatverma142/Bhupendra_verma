@@ -14,7 +14,7 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-white);
-  overflow-x: hidden; /* Prevent horizontal scroll on body */
+  overflow-x: hidden; /* Horizontal scroll prevent */
 }
 
 /* =========================================
@@ -114,7 +114,7 @@ body {
 }
 
 /* =========================================
-   3. PROJECTS GRID SYSTEM
+   3. PROJECTS GRID SYSTEM (DESKTOP)
    ========================================= */
 .projects-display-grid {
   display: grid;
@@ -148,7 +148,7 @@ body {
   height: 220px;
   width: 100%;
   overflow: hidden;
-  flex-shrink: 0; /* Important: Prevents image from shrinking on mobile */
+  flex-shrink: 0;
 }
 
 .card-image-box img {
@@ -256,76 +256,83 @@ body {
 
 
 /* =========================================
-   4. CRITICAL MOBILE FIXES
+   4. CRITICAL MOBILE FIXES (FINAL & UPDATED)
    ========================================= */
 @media (max-width: 768px) {
   
-  /* Navbar Adjustment */
-  .navbar {
-    padding: 10px 0;
-    background: rgba(10, 10, 10, 0.98); /* Ensure text is readable */
+  /* --- A. Layout & Scroll Fixes --- */
+  html, body {
+    overflow-y: auto !important; /* Forces scroll */
+    height: auto !important;
   }
-  .logo-text h1 { font-size: 1.1rem; }
-  .logo-text p { display: none; } /* Hide 'WEB DEVELOPER' to save space */
 
-  /* Hero Section Spacing */
+  /* --- B. Navbar Fixes --- */
+  .navbar {
+    padding: 15px 0;
+    background: rgba(10, 10, 10, 0.98); /* Solid background */
+  }
+  .nav-container { padding: 0 20px; }
+  .logo-text h1 { font-size: 1rem; }
+  .logo-text p { display: none; } /* Saves space */
+
+  /* --- C. Hero Section Adjustments --- */
   .projects-hero { 
-    margin-top: 85px; /* Adjust based on new navbar height */
+    margin-top: 110px !important; /* More top gap to avoid Navbar overlap */
     min-height: auto;
     padding-bottom: 40px;
   }
 
-  /* Fix Title Overlapping */
   .main-title {
-    font-size: 2.5rem;
-    line-height: 1.3;
+    font-size: 2.8rem;
+    line-height: 1.2;
     display: flex;
-    flex-direction: column; /* Stack text */
+    flex-direction: column;
     gap: 0;
   }
   
   .stroke-text {
-    font-size: 2.8rem;
-    display: block;
-    margin-top: -5px; 
+    font-size: 3rem;
     opacity: 0.5;
   }
 
-  /* Filters: Horizontal Scrolling */
+  /* --- D. Filters (Wrap Buttons to show all) --- */
   .filter-wrapper { padding: 0 15px; margin-bottom: 25px; }
 
   .filter-buttons {
-      flex-wrap: nowrap;
-      overflow-x: auto; /* Enable scroll */
-      justify-content: flex-start;
-      padding-bottom: 10px;
+      flex-wrap: wrap !important; /* Wrap buttons so none are hidden */
+      justify-content: center;
       gap: 10px;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
   }
-  .filter-buttons::-webkit-scrollbar { display: none; }
-  .filter-btn { font-size: 13px; padding: 8px 18px; flex-shrink: 0; }
   
-  /* Grid: Single Column */
+  .filter-btn { font-size: 13px; padding: 8px 18px; }
+  
+  /* --- E. Grid & Cards (CRITICAL DATA FIXES) --- */
   .projects-display-grid { 
-    grid-template-columns: 1fr; /* Force 1 Column */
-    gap: 30px; 
-    padding: 0 20px 80px 20px;
+    display: flex !important; /* Switch to Flex for safer stacking */
+    flex-direction: column;
+    gap: 40px; 
+    padding: 0 20px 150px 20px !important; /* Huge bottom padding to prevent cut-off */
   }
   
-  /* Broken Card Fixes */
   .project-display-card {
-      height: auto; /* Let card grow naturally */
-      min-height: auto; 
+      width: 100%;
+      height: auto !important; /* Let card expand with content */
+      min-height: auto !important;
   }
 
   .card-image-box {
-      height: 200px; /* Force fixed height */
+      height: 200px !important; /* Fixed height for image */
       width: 100%;
   }
   
   .card-content {
-      padding: 20px;
+      padding: 20px !important;
       flex-grow: 1;
+      height: auto !important;
+  }
+
+  .card-content p {
+      white-space: normal !important; /* Ensure text wraps */
+      display: block !important;
   }
 }

@@ -168,36 +168,16 @@ const AboutSection = () => (
   </section>
 );
 
-// --- ADDED MISSING FOOTER COMPONENT ---
-const FooterSection = () => (
-  <footer className="footer-cta">
-    <p className="pill-label">CONTACT</p>
-    <h2 className="footer-heading">Let's work together</h2>
-    <a href="mailto:hello@bhupendra.com" className="email-link">hello@bhupendra.com</a>
-    
-    <div className="footer-nav">
-      <Link to="/" className="link">Home</Link>
-      <Link to="/projects" className="link">Work</Link>
-      <Link to="/about" className="link">About</Link>
-      <Link to="/contact" className="link">Contact</Link>
-    </div>
-    
-    <div style={{ marginTop: '60px', color: '#555', fontSize: '12px' }}>
-      © {new Date().getFullYear()} Bhupendra Verma. All rights reserved.
-    </div>
-  </footer>
-);
 
 // --- MAIN EXPORT ---
-const Home = () => (
+const Bhupendra_verma = () => (
   <>
     <HeroSection />
     <WhyWorkSection />
     <ProjectsSection />
     <ServicesSection />
     <AboutSection />
-    <FooterSection />
   </>
 );
 
-export default Home;
+export default Bhupendra_verma;
