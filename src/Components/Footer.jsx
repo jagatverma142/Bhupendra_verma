@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Github, Linkedin, Twitter, Instagram, ArrowUp, Heart, Copy, Check 
 } from 'lucide-react';
-import '../CSS/Footer.css';
+import '../CSS/Footer.css'; // Ensure this file exists (see below)
 
 const Footer = () => {
   const [copied, setCopied] = useState(false);
+  const location = useLocation();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("Bhupendra8171121943@gmail.com");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("Bhupendra8171121943@gmail.com");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
   };
 
+  // Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
     },
   };
 
@@ -40,10 +43,20 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: <Github size={20} />, url: "https://github.com/yourusername" },
-    { icon: <Linkedin size={20} />, url: "https://linkedin.com/in/yourusername" },
-    { icon: <Twitter size={20} />, url: "https://twitter.com/yourusername" },
-    { icon: <Instagram size={20} />, url: "https://instagram.com/yourusername" }
+    { icon: <Github size={20} />, url: "https://github.com/yourusername", name: "GitHub" },
+    { icon: <Linkedin size={20} />, url: "https://linkedin.com/in/yourusername", name: "LinkedIn" },
+    { icon: <Twitter size={20} />, url: "https://twitter.com/yourusername", name: "Twitter" },
+    { icon: <Instagram size={20} />, url: "https://instagram.com/yourusername", name: "Instagram" }
+  ];
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Services', path: '/services' },
+    { name: 'Contact', path: '/contact' },
+    // Use isExternal for Resume if it's a PDF, otherwise remove the flag
+    { name: 'Resume', path: '/resume.pdf', isExternal: true } 
   ];
 
   return (
@@ -83,7 +96,7 @@ const Footer = () => {
                 className="copy-btn"
                 onClick={handleCopyEmail}
                 whileTap={{ scale: 0.9 }}
-                title="Copy Email"
+                aria-label="Copy Email Address"
               >
                 <AnimatePresence mode='wait'>
                   {copied ? (
@@ -115,10 +128,26 @@ const Footer = () => {
             <div className="footer-group">
               <h3>Menu</h3>
               <div className="link-column">
-                {['Home', 'About', 'Projects', 'Services', 'Resume'].map((item) => (
-                  <Link to={`/${item.toLowerCase()}`} key={item} className="footer-link">
-                    {item}
-                  </Link>
+                {navLinks.map((item) => (
+                  <React.Fragment key={item.name}>
+                    {item.isExternal ? (
+                      <a 
+                        href={item.path} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="footer-link"
+                      >
+                        {item.name}
+                      </a>
+                    ) : (
+                      <Link 
+                        to={item.path} 
+                        className={`footer-link ${location.pathname === item.path ? 'active' : ''}`}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </React.Fragment>
                 ))}
               </div>
             </div>
@@ -131,8 +160,9 @@ const Footer = () => {
                     key={index} 
                     href={social.url} 
                     target="_blank" 
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="social-icon-box"
+                    aria-label={`Visit my ${social.name}`}
                     whileHover={{ y: -5, backgroundColor: '#a3ff12', color: '#000' }}
                     whileTap={{ scale: 0.9 }}
                     transition={{ type: "spring", stiffness: 300 }}
@@ -146,7 +176,7 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <motion.div className="footer-divider" variants={itemVariants}></motion.div>
+        <motion.div className="footer-divider" variants={itemVariants} />
 
         {/* Bottom Section */}
         <motion.div className="footer-bottom" variants={itemVariants}>
@@ -160,6 +190,7 @@ const Footer = () => {
           <motion.button 
             className="scroll-top-btn" 
             onClick={scrollToTop}
+            aria-label="Scroll to top"
             whileHover={{ y: -3, boxShadow: "0px 0px 15px rgba(163, 255, 18, 0.4)" }}
             whileTap={{ scale: 0.9 }}
           >
