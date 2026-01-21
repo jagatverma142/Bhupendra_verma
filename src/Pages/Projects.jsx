@@ -66,7 +66,7 @@ const projectsData = [
     img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800&auto=format&fit=crop", // Education/Classroom Vibe
     desc: "Dynamic educational website featuring a responsive Hero section, course listings, and interactive UI components.",
     tech: ["React", "Vite", "Responsive UI", "CSS"],
-    links: { live: "#", repo: "#" }
+    links: { live: "https://jagatverma142.github.io/Jagateducation/", repo: "#" }
   },
   {
     id: 6,
