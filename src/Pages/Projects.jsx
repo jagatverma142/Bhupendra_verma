@@ -76,7 +76,7 @@ const projectsData = [
     img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop",
     desc: "Responsive medical website with dynamic routing and service listings deployed on GitHub Pages.",
     tech: ["React", "Vite", "Tailwind", "Gh-Pages"],
-    links: { live: "#", repo: "#" }
+    links: { live: "https://jagatverma142.github.io/jagat_med_web/", repo: "#" }
   },
   {
     id: 7,
