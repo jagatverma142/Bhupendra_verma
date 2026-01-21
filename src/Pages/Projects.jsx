@@ -5,61 +5,14 @@ import '../CSS/Project.css';
 
 // --- 1. ENHANCED DATA WITH JAGAT-EDUCATION ADDED ---
 const projectsData = [
-  // --- DJANGO PROJECTS ---
-  {
-    id: 1,
-    title: "College Management System",
-    category: "Django",
-    status: "Live",
-    img: "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/70adb7fe-aecc-5003-8393-e25f3f8ef6fd/2cb3812c-99df-5a39-a07f-1bcae2817edb.jpg",
-    desc: "Comprehensive platform to manage student/faculty records and department schedules.",
-    tech: ["Django", "MySQL", "Python", "HTML/CSS"],
-    links: { live: "#", repo: "#" }
-  },
-  {
-    id: 2,
-    title: "Hospital Patient Manager",
-    category: "Django",
-    status: "Live",
-    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop",
-    desc: "Secure web app for patient records and appointments with Role-Based Access Control.",
-    tech: ["Django", "RBAC", "Bootstrap", "SQLite"],
-    links: { live: "#", repo: "#" }
-  },
-  {
-    id: 3,
-    title: "Insurance Claim Portal",
-    category: "Django",
-    status: "Done",
-    img: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop",
-    desc: "Secure portal for users to submit claims and agents to track statuses with high data integrity.",
-    tech: ["Django", "Python", "Secure Auth"],
-    links: { live: "#", repo: "#" }
-  },
-  {
-    id: 4,
-    title: "Food Ordering Site",
-    category: "Django",
-    status: "Beta",
-    img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop",
-    desc: "Dynamic e-commerce site featuring a real-time shopping cart and menu management APIs.",
-    tech: ["Django", "REST API", "JavaScript", "AJAX"],
-    links: { live: "#", repo: "#" }
-  },
-  {
-    id: 5,
-    title: "Inventory Management",
-    category: "Django",
-    status: "Done",
-    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop",
-    desc: "Automated system to track stock levels, generate reports, and manage supplier data.",
-    tech: ["Django", "MySQL", "Chart.js"],
-    links: { live: "#", repo: "#" }
-  },
+
+
+
+
 
   // --- MERN / REACT PROJECTS ---
   {
-    id: 13, // New Project ID
+    id: 1, // New Project ID
     title: "Jagat-Education",
     category: "MERN Stack",
     status: "Live",
@@ -69,7 +22,7 @@ const projectsData = [
     links: { live: "https://jagatverma142.github.io/Jagateducation/", repo: "#" }
   },
   {
-    id: 6,
+    id: 2,
     title: "Jagat-Med Health Portal",
     category: "MERN Stack",
     status: "Live",
@@ -79,7 +32,7 @@ const projectsData = [
     links: { live: "https://jagatverma142.github.io/jagat_med_web/", repo: "#" }
   },
   {
-    id: 7,
+    id: 3,
     title: "Online Course LMS",
     category: "MERN Stack",
     status: "Beta",
@@ -89,7 +42,7 @@ const projectsData = [
     links: { live: "#", repo: "#" }
   },
   {
-    id: 8,
+    id: 4,
     title: "Personal Portfolio",
     category: "MERN Stack",
     status: "Live",
@@ -99,7 +52,7 @@ const projectsData = [
     links: { live: "#", repo: "#" }
   },
   {
-    id: 9,
+    id: 5,
     title: "Artist Portfolio",
     category: "MERN Stack",
     status: "Live",
@@ -108,10 +61,63 @@ const projectsData = [
     tech: ["React", "CSS Grid", "Lazy Load"],
     links: { live: "#", repo: "#" }
   },
+  // --- DJANGO PROJECTS ---
+  {
+    id: 6,
+    title: "College Management System",
+    category: "Django",
+    status: "Live",
+    img: "https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/70adb7fe-aecc-5003-8393-e25f3f8ef6fd/2cb3812c-99df-5a39-a07f-1bcae2817edb.jpg",
+    desc: "Comprehensive platform to manage student/faculty records and department schedules.",
+    tech: ["Django", "MySQL", "Python", "HTML/CSS"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 7,
+    title: "Hospital Patient Manager",
+    category: "Django",
+    status: "Live",
+    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop",
+    desc: "Secure web app for patient records and appointments with Role-Based Access Control.",
+    tech: ["Django", "RBAC", "Bootstrap", "SQLite"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 8,
+    title: "Insurance Claim Portal",
+    category: "Django",
+    status: "Done",
+    img: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop",
+    desc: "Secure portal for users to submit claims and agents to track statuses with high data integrity.",
+    tech: ["Django", "Python", "Secure Auth"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 9,
+    title: "Food Ordering Site",
+    category: "Django",
+    status: "Beta",
+    img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop",
+    desc: "Dynamic e-commerce site featuring a real-time shopping cart and menu management APIs.",
+    tech: ["Django", "REST API", "JavaScript", "AJAX"],
+    links: { live: "#", repo: "#" }
+  },
+  {
+    id: 10,
+    title: "Inventory Management",
+    category: "Django",
+    status: "Done",
+    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop",
+    desc: "Automated system to track stock levels, generate reports, and manage supplier data.",
+    tech: ["Django", "MySQL", "Chart.js"],
+    links: { live: "#", repo: "#" }
+  },
+
+  
 
   // --- ADVANCED WORDPRESS PROJECTS ---
   {
-    id: 10,
+    id: 11,
     title: "Headless E-Commerce",
     category: "WordPress",
     status: "Live",
@@ -121,7 +127,7 @@ const projectsData = [
     links: { live: "#", repo: "#" }
   },
   {
-    id: 11,
+    id: 12,
     title: "Custom Real Estate Portal",
     category: "WordPress",
     status: "Done",
@@ -131,7 +137,7 @@ const projectsData = [
     links: { live: "#", repo: "#" }
   },
   {
-    id: 12,
+    id: 13,
     title: "Event Booking Plugin",
     category: "WordPress",
     status: "Plugin",
