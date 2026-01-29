@@ -37,7 +37,7 @@ const projectsData = [
     category: "MERN Stack",
     status: "Beta",
     img: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=800&auto=format&fit=crop",
-    desc: "Developed a modern, responsive digital agency portfolio website showcasing services like brand identity, UX/UI design, web development, SEO, and growth strategy. The site highlights key achievements (1200+ brands served, 450+ projects delivered, 98% client satisfaction) and presents a clear roadmap to success.",
+    desc: "Modern digital agency portfolio featuring services from UI/UX to SEO. Showcases 1.2k+ brands, 450+ projects, and a 98% satisfaction rate with a clear growth roadmap.",
     tech: ["React", "Vite", "Tailwind", "Gh-Pages", "Responsive Design","MongoDB"],
     links: { live: "https://jagatverma142.github.io/Digital_Agency/", repo: "#" }
   },
@@ -148,7 +148,7 @@ const projectsData = [
   }
 ];
 
-const categories = ["All", "Django", "MERN Stack", "WordPress"];
+const categories = ["All", "MERN Stack", "Django", "WordPress"];
 
 // --- 2. ANIMATION VARIANTS ---
 const containerVariants = {
