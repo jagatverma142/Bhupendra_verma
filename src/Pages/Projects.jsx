@@ -138,13 +138,13 @@ const projectsData = [
   },
   {
     id: 13,
-    title: "Event Booking Plugin",
+    title: "Live Hospital webiste ",
     category: "WordPress",
     status: "Plugin",
     img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop",
-    desc: "Developed a custom booking plugin from scratch with AJAX validation and admin dashboard analytics.",
+    desc: "Sarthak Hospital, Agra – trusted multi-speciality care with advanced facilities, expert doctors, and 24x7 emergency support.",
     tech: ["PHP", "Plugin Dev", "AJAX", "MySQL"],
-    links: { live: "#", repo: "#" }
+    links: { live: "https://tajtriptour.in/index.php?lang=en", repo: "#" }
   }
 ];
 
