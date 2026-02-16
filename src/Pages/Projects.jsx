@@ -141,7 +141,7 @@ const projectsData = [
     title: "Live Hospital webiste ",
     category: "WordPress",
     status: "Plugin",
-    img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop",
+    img: "https://media.istockphoto.com/id/1312706413/photo/modern-hospital-building.jpg?s=1024x1024&w=is&k=20&c=PmaJ_oxBGdRw0c8g_-KAb2hZVzWEK5Yx83fe2plqLL4=",
     desc: "Sarthak Hospital, Agra – trusted multi-speciality care with advanced facilities, expert doctors, and 24x7 emergency support.",
     tech: ["PHP", "Plugin Dev", "AJAX", "MySQL"],
     links: { live: "https://tajtriptour.in/index.php?lang=en", repo: "#" }
