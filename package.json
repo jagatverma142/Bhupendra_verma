@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"npm --prefix Frontent run dev\" \"npm --prefix Backend run dev\"",
     "build": "npm --prefix Frontent run build",
-    "start": "cross-env NODE_ENV=production npm --prefix Backend run start"
+    "start": "cross-env NODE_ENV=production npm --prefix Backend run start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d Frontent/dist"
   },
   "repository": {
     "type": "git",
@@ -20,10 +22,11 @@
   "bugs": {
     "url": "https://github.com/jagatverma142/Bhupendra_verma/issues"
   },
-  "homepage": "https://github.com/jagatverma142/Bhupendra_verma#readme",
+  "homepage": "https://jagatverma142.github.io/Bhupendra_verma/",
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "cross-env": "^10.1.0"
+    "cross-env": "^10.1.0",
+    "gh-pages": "^6.3.0"
   },
   "dependencies": {
     "react-router-dom": "^7.13.1"
