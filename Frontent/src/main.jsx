@@ -6,7 +6,7 @@ import './index.css'
 import App from './App.jsx'
 
 // ✅ Import Vercel Analytics
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from "@vercel/analytics/react"
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
