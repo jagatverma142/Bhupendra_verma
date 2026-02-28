@@ -125,7 +125,7 @@ const PROFILE = {
   email: "Bhupendra8171121943@gmail.com",
   phone: "+91 8171121943",
   resumeUrl: "https://jagatverma142.github.io/Bhupendra_verma/resume.pdf",
-  github: "https://github.com/jagatverma142", // update if needed
+  github: "", // update if needed
   linkedin: "https://www.linkedin.com/", // update
   summary:
     "I build responsive, modern web interfaces and practical business websites. I focus on clean UI, performance-first structure, and maintainable code.",
