@@ -1,11 +1,17 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-export default defineConfig({
-  // ✅ GitHub repo name (IMPORTANT: trailing slash)
-  base: "/Bhupendra_verma/",
-
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
+
+  // ✅ Base path auto-switch
+  // - Dev (npm run dev): "/"
+  // - Vercel Deploy: "/"
+  // - GitHub Pages (production build): "/Bhupendra_verma/"
+  base:
+    mode === "production"
+      ? "/Bhupendra_verma/" // GitHub Pages (repo name)
+      : "/",                // Dev + Vercel
 
   server: {
     proxy: {
@@ -16,4 +22,4 @@ export default defineConfig({
       }
     }
   }
-});
+}));
