@@ -37,9 +37,7 @@ import {
 } from "lucide-react";
 
 // Placeholder Profile Image
-const profileImg =
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop";
-
+import homeimg from "../assets/profile.jpeg";
 // ---------- 1. DATA ----------
 const featuresData = [
   { icon: <Palette size={28} />, title: "Tailored Design", desc: "Unique brand identities that tell your specific story visually." },
@@ -466,11 +464,11 @@ const AboutSection = () => (
         <motion.div variants={fadeUpV} className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-6">
           <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/10">
             <motion.img
-              src={profileImg}
+              src={homeimg}
               alt="Bhupendra Verma"
               loading="lazy"
               decoding="async"
-              className="w-full h-full object-cover grayscale"
+              className="w-full h-full object-cover "
               whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
               transition={{ duration: 0.6 }}
             />
