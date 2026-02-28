@@ -12,17 +12,24 @@ export default function AdminLogin() {
     e.preventDefault();
     setErr("");
     setLoading(true);
+
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password })
       });
+
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error?.message || "Login failed");
 
       setToken(data.token);
-      navigate("/admin/projects");
+
+      // ✅ Correct redirect (dashboard index route)
+      navigate("/admin", { replace: true });
+
+      // (Optional) If you really want projects page:
+      // navigate("/admin/projects", { replace: true });
     } catch (e2) {
       setErr(e2.message);
     } finally {

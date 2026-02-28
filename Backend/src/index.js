@@ -5,15 +5,20 @@ const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
+
 const { notFound } = require("./middleware/notFound");
 const { errorHandler } = require("./middleware/errorHandler");
 
 const healthRoutes = require("./routes/health");
 const contactRoutes = require("./routes/contact");
 const projectsRoutes = require("./routes/projects");
-const adminRoutes = require("./routes/admin");
-const adminDataRoutes = require("./routes/adminData");   // 🔹 new import
+const adminRoutes = require("./routes/admin");          // /login
+const adminDataRoutes = require("./routes/adminData"); // /messages, /events
 const resumeRoutes = require("./routes/resume");
+const contentRoutes = require("./routes/content");
+const adminContentRoutes = require("./routes/adminContent");
+const adminAuthRoutes = require("./routes/adminAuth");
+
 
 const app = express();
 app.set("trust proxy", 1);
@@ -47,12 +52,17 @@ app.use(
   })
 );
 
+// ✅ Routes mount section
 app.use("/api/health", healthRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/projects", projectsRoutes);
 app.use("/api/admin", adminRoutes);       // /login
 app.use("/api/admin", adminDataRoutes);   // /messages, /events
 app.use("/api/resume", resumeRoutes);
+app.use("/api/content", contentRoutes);
+app.use("/api/admin", adminContentRoutes); // /content
+app.use("/api/admin", adminAuthRoutes);    // /login
+
 
 // Production: built Frontend serve karo (same-origin)
 if (process.env.NODE_ENV === "production") {

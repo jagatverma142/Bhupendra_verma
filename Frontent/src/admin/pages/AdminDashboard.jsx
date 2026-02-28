@@ -7,6 +7,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     let alive = true;
+
     Promise.all([
       adminFetch("/api/projects"),
       adminFetch("/api/admin/messages"),
@@ -21,14 +22,15 @@ export default function AdminDashboard() {
         });
       })
       .catch((x) => setErr(x.message));
-    return () => { alive = false; };
+
+    return () => {
+      alive = false;
+    };
   }, []);
 
   return (
     <div>
       <h1 className="text-xl font-semibold">Dashboard</h1>
-      <p className="text-sm text-slate-300 mt-1">Quick overview.</p>
-
       {err && <div className="text-red-400 text-sm mt-3">{err}</div>}
 
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">

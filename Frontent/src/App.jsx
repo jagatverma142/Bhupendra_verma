@@ -11,12 +11,17 @@ import Services from "./Pages/Services";
 import Contact from "./Pages/Contact";
 import Resume from "./Pages/Resume";
 
-// 🔹 Admin imports
+// Admin imports
 import AdminLogin from "./admin/pages/AdminLogin";
-import AdminProjects from "./admin/pages/AdminProjects";
 import AdminDashboard from "./admin/pages/AdminDashboard";
+import AdminHome from "./admin/pages/AdminHome";
+import AdminAbout from "./admin/pages/AdminAbout";
+import AdminProjects from "./admin/pages/AdminProjects";
+import AdminServices from "./admin/pages/AdminServices";
 import AdminMessages from "./admin/pages/AdminMessages";
 import AdminLogs from "./admin/pages/AdminLogs";
+import AdminContent from "./admin/pages/AdminContent";
+
 import AdminGuard from "./admin/components/AdminGuard";
 import AdminLayout from "./admin/layout/AdminLayout";
 
@@ -31,7 +36,7 @@ function AppRoutesWithLayout() {
       {!isAdminRoute && <Navbar />}
 
       <Routes>
-        {/* Portfolio routes */}
+        {/* Public routes */}
         <Route path="/" element={<Bhupendra_verma />} />
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
@@ -41,6 +46,7 @@ function AppRoutesWithLayout() {
 
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
+
         <Route
           path="/admin"
           element={
@@ -49,11 +55,21 @@ function AppRoutesWithLayout() {
             </AdminGuard>
           }
         >
+          {/* ✅ Admin dashboard = /#/admin */}
           <Route index element={<AdminDashboard />} />
+
+          {/* ✅ Admin pages */}
+          <Route path="home" element={<AdminHome />} />
+          <Route path="about" element={<AdminAbout />} />
           <Route path="projects" element={<AdminProjects />} />
+          <Route path="services" element={<AdminServices />} />
           <Route path="messages" element={<AdminMessages />} />
           <Route path="logs" element={<AdminLogs />} />
+          <Route path="content" element={<AdminContent />} />
         </Route>
+
+        {/* Optional: Not found */}
+        {/* <Route path="*" element={<div className="p-6 text-white">Page not found</div>} /> */}
       </Routes>
 
       {!isAdminRoute && <Footer />}
@@ -61,12 +77,10 @@ function AppRoutesWithLayout() {
   );
 }
 
-function App() {
+export default function App() {
   return (
     <Router>
       <AppRoutesWithLayout />
     </Router>
   );
 }
-
-export default App;
