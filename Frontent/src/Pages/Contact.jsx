@@ -314,7 +314,7 @@ const ContactFormPanel = () => {
     setForm((p) => ({ ...p, [name]: type === "checkbox" ? checked : value }));
   };
 
-  // INTEGRATED LOGIC HERE
+  // ✅ INTEGRATED LOGIC HERE (UPDATED)
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -324,7 +324,15 @@ const ContactFormPanel = () => {
     try {
       await apiFetch("/api/contact", {
         method: "POST",
-        body: JSON.stringify(form)
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          service: form.service,
+          budget: form.budget,
+          timeline: form.timeline,
+          message: form.message,
+          consent: form.consent
+        })
       });
 
       setIsSent(true);
