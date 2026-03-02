@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
     proxy: {
       // ✅ All /api/* requests go to backend
       "/api": {
-        target: "http://localhost:5000",
+        target: "https://backendpf-xvn8.onrender.com",
         changeOrigin: true
       }
     }
