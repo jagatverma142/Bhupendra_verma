@@ -8,13 +8,16 @@ export default function AdminLogin() {
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
+  // ✅ Base API URL from env
+  const API = import.meta.env.VITE_API_BASE;
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setErr("");
     setLoading(true);
 
     try {
-      const res = await fetch("/api/admin/login", {
+      const res = await fetch(`${API}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password })
@@ -25,10 +28,9 @@ export default function AdminLogin() {
 
       setToken(data.token);
 
-      // ✅ Correct redirect (dashboard index route)
+      // ✅ Redirect after login
       navigate("/admin", { replace: true });
-
-      // (Optional) If you really want projects page:
+      // Or if you want projects page directly:
       // navigate("/admin/projects", { replace: true });
     } catch (e2) {
       setErr(e2.message);
