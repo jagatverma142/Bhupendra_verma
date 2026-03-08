@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   AnimatePresence,
   MotionConfig,
@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 
 // API Fetch Import
-import { apiFetch } from "../lib/api"; // Path check kar lijiyega
+import { apiFetch } from "../lib/api";
 
 // -------------------- 1. DATA (FALLBACK) --------------------
 const initialProjects = [
@@ -217,6 +217,16 @@ const initialProjects = [
     links: { live: "http://delhiagrajaipurtour.in/", repo: "#" },
   },
   {
+    id: 19,
+    title: "Techvera",
+    category: "Client Work",
+    status: "Live",
+    img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+    desc: "Live tech business website deployed on GitHub Pages.",
+    tech: ["Client Work", "React", "GitHub Pages", "Live Website"],
+    links: { live: "https://vjagat171-hash.github.io/Techvera/", repo: "#" },
+  },
+  {
     id: 20,
     title: "Aravstar",
     category: "Client Work",
@@ -300,6 +310,7 @@ const fadeUpV = {
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 22 });
+
   return (
     <motion.div
       style={{ scaleX, transformOrigin: "0% 50%" }}
@@ -370,12 +381,19 @@ const TiltCard = ({ children }) => {
 };
 
 const SectionHeading = ({ kicker, title, align = "left" }) => (
-  <motion.div variants={fadeUpV} className={align === "center" ? "text-center mb-12 md:mb-16" : "mb-12 md:mb-16"}>
+  <motion.div
+    variants={fadeUpV}
+    className={align === "center" ? "text-center mb-12 md:mb-16" : "mb-12 md:mb-16"}
+  >
     <div className={`inline-flex items-center gap-2 mb-3 ${align === "center" ? "justify-center" : ""}`}>
       <Sparkles size={16} className="text-green-500" />
-      <span className="text-[12px] md:text-[13px] font-bold uppercase tracking-[4px] text-green-500">{kicker}</span>
+      <span className="text-[12px] md:text-[13px] font-bold uppercase tracking-[4px] text-green-500">
+        {kicker}
+      </span>
     </div>
-    <h2 className="text-[2.1rem] sm:text-[2.4rem] md:text-[3rem] font-bold leading-tight text-white">{title}</h2>
+    <h2 className="text-[2.1rem] sm:text-[2.4rem] md:text-[3rem] font-bold leading-tight text-white">
+      {title}
+    </h2>
   </motion.div>
 );
 
@@ -418,9 +436,21 @@ const QuickNavSection = () => {
 
 const WhatIBuildSection = () => {
   const cards = [
-    { title: "Landing pages", desc: "Fast, responsive pages for lead generation & brand presence.", tags: ["Hero", "SEO", "Performance"] },
-    { title: "Dashboards & portals", desc: "Admin panels, CRUD apps, role-based flows, analytics UI.", tags: ["Auth", "CRUD", "RBAC"] },
-    { title: "Client websites", desc: "Business sites with clean UI, speed, and deployment support.", tags: ["Live Deploy", "Support", "Responsive"] },
+    {
+      title: "Landing pages",
+      desc: "Fast, responsive pages for lead generation & brand presence.",
+      tags: ["Hero", "SEO", "Performance"],
+    },
+    {
+      title: "Dashboards & portals",
+      desc: "Admin panels, CRUD apps, role-based flows, analytics UI.",
+      tags: ["Auth", "CRUD", "RBAC"],
+    },
+    {
+      title: "Client websites",
+      desc: "Business sites with clean UI, speed, and deployment support.",
+      tags: ["Live Deploy", "Support", "Responsive"],
+    },
   ];
 
   return (
@@ -550,7 +580,6 @@ const TestimonialsSection = () => {
 };
 
 // -------------------- 4. DYNAMIC SECTIONS --------------------
-// Updated to receive `projects` as a prop
 const CategoryBreakdownSection = ({ categories, projects }) => {
   const liveCount = useMemo(
     () => projects.filter((p) => String(p.status).toLowerCase() === "live").length,
@@ -563,7 +592,12 @@ const CategoryBreakdownSection = ({ categories, projects }) => {
       label: c,
       value: projects.filter((p) => p.category === c).length,
     }));
-    return [{ label: "Total projects", value: projects.length }, { label: "Live", value: liveCount }, ...catStats];
+
+    return [
+      { label: "Total projects", value: projects.length },
+      { label: "Live", value: liveCount },
+      ...catStats,
+    ];
   }, [categories, liveCount, projects]);
 
   return (
@@ -747,6 +781,7 @@ const FAQSection = () => {
         <div className="grid gap-4 max-w-[900px] mx-auto">
           {projectsFAQ.map((item, i) => {
             const isOpen = open === i;
+
             return (
               <motion.div
                 key={i}
@@ -766,6 +801,7 @@ const FAQSection = () => {
                       {item.q}
                     </span>
                   </div>
+
                   <motion.span
                     animate={{ rotate: isOpen ? 90 : 0 }}
                     transition={{ duration: 0.2 }}
@@ -786,7 +822,9 @@ const FAQSection = () => {
                       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-6 text-zinc-400 font-light leading-relaxed pl-[3.25rem]">{item.a}</div>
+                      <div className="px-6 pb-6 text-zinc-400 font-light leading-relaxed pl-[3.25rem]">
+                        {item.a}
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -801,28 +839,27 @@ const FAQSection = () => {
 
 // -------------------- 5. MAIN PAGE --------------------
 const Project = () => {
-  // 1. Setup State and default to initialProjects
   const [projects, setProjects] = useState(initialProjects);
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
 
-  // 2. Fetch logic integrated here
   useEffect(() => {
     let alive = true;
+
     apiFetch("/api/projects")
       .then((data) => {
         if (!alive) return;
-        // As per your previous logic, checking data?.projects?.length
         if (data?.projects?.length) {
           setProjects(data.projects);
         }
       })
       .catch((error) => {
         console.error("Failed to fetch projects, falling back to initial data", error);
-        // Keep UI same by silently falling back to initialProjects
       });
 
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, []);
 
   const categories = useMemo(() => {
@@ -878,16 +915,11 @@ const Project = () => {
         </section>
 
         <QuickNavSection />
-        
-        {/* Pass projects as props to dynamic helper sections */}
         <CategoryBreakdownSection categories={categories} projects={projects} />
-        
         <WhatIBuildSection />
-        
         <FeaturedSection projects={projects} />
         <StackFocusSection />
         <TechToolboxSection projects={projects} />
-        
         <IndustriesSection />
         <WorkflowSection />
 
@@ -960,7 +992,8 @@ const Project = () => {
 
                             <div className="absolute top-4 left-4">
                               <span className="bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-white border border-white/10 inline-flex items-center gap-2">
-                                <FolderOpen size={12} /> {project.category}
+                                <FolderOpen size={12} />
+                                {project.category}
                               </span>
                             </div>
 
@@ -1013,7 +1046,9 @@ const Project = () => {
                             <h3 className="text-white font-bold text-xl mb-2 group-hover:text-green-400 transition-colors">
                               {project.title}
                             </h3>
-                            <p className="text-zinc-400 font-light leading-relaxed text-sm mb-5 flex-grow">{project.desc}</p>
+                            <p className="text-zinc-400 font-light leading-relaxed text-sm mb-5 flex-grow">
+                              {project.desc}
+                            </p>
 
                             <div className="flex flex-wrap gap-2 mt-auto">
                               {(project.tech || []).slice(0, 5).map((t, idx) => (
@@ -1065,7 +1100,7 @@ const Project = () => {
             <h3 className="text-white font-black leading-tight text-[2rem] sm:text-[2.4rem] md:text-[3.2rem]">
               Want a project like this?
               <br />
-              <span className="text-green-500">Let’s build it.</span>
+              <span className="text-green-500">Lets build it.</span>
             </h3>
 
             <p className="text-zinc-400 font-light leading-relaxed mt-4 max-w-[640px] mx-auto">
