@@ -3,33 +3,34 @@ import {
   AnimatePresence,
   MotionConfig,
   motion,
-  useMotionValue,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useSpring,
-  useMotionValueEvent,
 } from "framer-motion";
 import {
   ArrowRight,
-  Briefcase,
   ChevronUp,
   Code,
   ExternalLink,
+  Eye,
   Filter,
   FolderOpen,
   Github,
+  Grid3X3,
   HelpCircle,
   Layers,
+  List,
   Mail,
   Search,
+  SlidersHorizontal,
   Sparkles,
+  X,
   Zap,
 } from "lucide-react";
-
-// API Fetch Import
 import { apiFetch } from "../lib/api";
 
-// -------------------- 1. DATA (FALLBACK) --------------------
+// -------------------- 1. DATA --------------------
 const initialProjects = [
   // MERN
   {
@@ -276,12 +277,25 @@ const initialProjects = [
     tech: ["Client Work", "Live Website"],
     links: { live: "https://www.chandrametal.com/", repo: "#" },
   },
+  {
+    id: 25,
+    title: "CricPulse Platform",
+    category: "MERN Stack",
+    status: "Live",
+    img: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=1200&auto=format&fit=crop",
+    desc: "Modern cricket platform built with React for live match discovery, featured score sections, quick navigation, responsive layouts, and a premium sports-focused interface.",
+    tech: ["React", "Vite", "Responsive UI", "React Router", "GitHub Pages", "Modern UI"],
+    links: {
+      live: "https://vjagat171-hash.github.io/cricpulse-platform/",
+      repo: "https://github.com/vjagat171-hash/cricpulse-platform",
+    },
+  },
 ];
 
 const projectsFAQ = [
   {
     q: "Can I see the source code for every project?",
-    a: "Some repos are public, while others are private/client-based. If the repo button is disabled, ask for a walkthrough.",
+    a: "Some repos are public, while others are private or client-based. If the repo button is disabled, ask for a walkthrough.",
   },
   {
     q: "Do you build full-stack apps too?",
@@ -289,27 +303,104 @@ const projectsFAQ = [
   },
   {
     q: "Can you redesign my existing website?",
-    a: "Yes—UI refresh, performance improvements, responsive fixes, and better information architecture.",
+    a: "Yes. I can improve UI, performance, responsiveness, and information architecture.",
   },
 ];
 
-// -------------------- 2. ANIMATIONS & UTILS --------------------
-const sectionWrap = "w-full max-w-[1200px] mx-auto px-5";
-const sectionPad = "py-20 md:py-24";
+// -------------------- 2. HELPERS --------------------
+const sectionWrap = "w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8";
+const sectionPad = "py-14 sm:py-16 lg:py-20";
 
 const containerV = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
 };
 
 const fadeUpV = {
-  hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 90, damping: 18 } },
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 90, damping: 18 },
+  },
 };
 
+const isValidLink = (url) => typeof url === "string" && url.trim() && url !== "#";
+
+const normalizeProject = (project, index = 0) => ({
+  id: project?.id ?? `project-${index}`,
+  title: String(project?.title || "Untitled Project"),
+  category: String(project?.category || "Other"),
+  status: String(project?.status || "Draft"),
+  img:
+    project?.img ||
+    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
+  desc: String(project?.desc || "Project description not available."),
+  tech: Array.isArray(project?.tech) ? project.tech.filter(Boolean) : [],
+  links: {
+    live: project?.links?.live || "#",
+    repo: project?.links?.repo || "#",
+  },
+});
+
+const projectKey = (project, index = 0) => {
+  if (project?.id !== undefined && project?.id !== null) return `id-${project.id}`;
+  if (project?.title) return `title-${String(project.title).toLowerCase().trim()}`;
+  return `idx-${index}`;
+};
+
+const mergeProjects = (fallbackProjects = [], apiProjects = []) => {
+  const map = new Map();
+
+  fallbackProjects.forEach((project, index) => {
+    const normalized = normalizeProject(project, index);
+    map.set(projectKey(normalized, index), normalized);
+  });
+
+  apiProjects.forEach((project, index) => {
+    const normalized = normalizeProject(project, index);
+    const key = projectKey(normalized, index);
+    const existing = map.get(key);
+
+    if (!existing) {
+      map.set(key, normalized);
+      return;
+    }
+
+    map.set(key, {
+      ...existing,
+      ...normalized,
+      tech: normalized.tech?.length ? normalized.tech : existing.tech,
+      links: {
+        ...existing.links,
+        ...normalized.links,
+      },
+    });
+  });
+
+  return Array.from(map.values()).sort((a, b) => {
+    const aId = Number(a.id);
+    const bId = Number(b.id);
+    if (!Number.isNaN(aId) && !Number.isNaN(bId)) return aId - bId;
+    return String(a.title).localeCompare(String(b.title));
+  });
+};
+
+const useDebouncedValue = (value, delay = 250) => {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+};
+
+// -------------------- 3. SMALL COMPONENTS --------------------
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 22 });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 20 });
 
   return (
     <motion.div
@@ -325,7 +416,7 @@ const BackToTop = () => {
   const [show, setShow] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (!reduce) setShow(latest > 800);
+    setShow(latest > 700);
   });
 
   return (
@@ -336,8 +427,10 @@ const BackToTop = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 14 }}
           transition={{ duration: 0.2 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })}
-          className="fixed bottom-6 right-6 z-[90] rounded-full border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-md w-12 h-12 inline-flex items-center justify-center hover:bg-white/10 transition-colors"
+          onClick={() =>
+            window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })
+          }
+          className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[90] rounded-full border border-white/10 bg-[#0a0a0a]/85 backdrop-blur-md w-11 h-11 sm:w-12 sm:h-12 inline-flex items-center justify-center hover:bg-white/10 transition-colors"
           aria-label="Back to top"
         >
           <ChevronUp className="text-white/80" size={18} />
@@ -347,84 +440,136 @@ const BackToTop = () => {
   );
 };
 
-const TiltCard = ({ children }) => {
-  const reduce = useReducedMotion();
-  const rx = useMotionValue(0);
-  const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 180, damping: 18 });
-  const sry = useSpring(ry, { stiffness: 180, damping: 18 });
-
-  const onMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    rx.set(-py * 8);
-    ry.set(px * 10);
-  };
-
-  return (
-    <motion.div
-      onMouseMove={reduce ? undefined : onMove}
-      onMouseLeave={() => {
-        rx.set(0);
-        ry.set(0);
-      }}
-      style={
-        reduce
-          ? undefined
-          : { perspective: 1000, rotateX: srx, rotateY: sry, transformStyle: "preserve-3d" }
-      }
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-const SectionHeading = ({ kicker, title, align = "left" }) => (
+const SectionHeading = ({ kicker, title, desc, align = "left", action = null }) => (
   <motion.div
     variants={fadeUpV}
-    className={align === "center" ? "text-center mb-12 md:mb-16" : "mb-12 md:mb-16"}
+    className={`mb-8 md:mb-12 ${
+      align === "center"
+        ? "text-center"
+        : "flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+    }`}
   >
-    <div className={`inline-flex items-center gap-2 mb-3 ${align === "center" ? "justify-center" : ""}`}>
-      <Sparkles size={16} className="text-green-500" />
-      <span className="text-[12px] md:text-[13px] font-bold uppercase tracking-[4px] text-green-500">
-        {kicker}
-      </span>
+    <div className={align === "center" ? "" : "max-w-[760px]"}>
+      <div
+        className={`inline-flex items-center gap-2 mb-3 ${
+          align === "center" ? "justify-center" : ""
+        }`}
+      >
+        <Sparkles size={16} className="text-green-500" />
+        <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[4px] text-green-500">
+          {kicker}
+        </span>
+      </div>
+
+      <h2 className="text-[1.9rem] sm:text-[2.3rem] md:text-[2.9rem] font-bold leading-tight text-white">
+        {title}
+      </h2>
+
+      {desc ? (
+        <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed font-light">
+          {desc}
+        </p>
+      ) : null}
     </div>
-    <h2 className="text-[2.1rem] sm:text-[2.4rem] md:text-[3rem] font-bold leading-tight text-white">
-      {title}
-    </h2>
+
+    {align !== "center" && action ? <div>{action}</div> : null}
   </motion.div>
 );
 
-// -------------------- 3. TOPIC SECTIONS --------------------
+const StatusPill = ({ status }) => {
+  const value = String(status || "").toLowerCase();
+
+  const cls =
+    value === "live"
+      ? "bg-green-500/15 text-green-300 border-green-500/30"
+      : value === "beta"
+      ? "bg-yellow-500/10 text-yellow-300 border-yellow-500/25"
+      : value === "done"
+      ? "bg-sky-500/10 text-sky-300 border-sky-500/25"
+      : value === "plugin"
+      ? "bg-purple-500/10 text-purple-300 border-purple-500/25"
+      : "bg-black/60 text-zinc-200 border-white/10";
+
+  return (
+    <span
+      className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold border backdrop-blur-md ${cls}`}
+    >
+      {status}
+    </span>
+  );
+};
+
+const SmartImage = ({ src, alt }) => {
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-zinc-900 to-black flex items-center justify-center">
+        <div className="text-center px-4">
+          <FolderOpen size={28} className="mx-auto text-white/40 mb-2" />
+          <p className="text-sm text-zinc-500">Preview unavailable</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailed(true)}
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+  );
+};
+
+const StatCard = ({ label, value, icon }) => (
+  <motion.div
+    variants={fadeUpV}
+    className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-5 sm:p-6 text-center"
+  >
+    <div className="w-10 h-10 mx-auto mb-3 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-green-400">
+      {icon}
+    </div>
+    <div className="text-white font-black text-2xl sm:text-3xl">{value}</div>
+    <div className="text-zinc-500 text-[11px] sm:text-xs font-bold tracking-[2px] uppercase mt-2">
+      {label}
+    </div>
+  </motion.div>
+);
+
+// -------------------- 4. SECTIONS --------------------
 const QuickNavSection = () => {
   const items = [
     { label: "Overview", id: "overview" },
     { label: "Featured", id: "featured" },
-    { label: "Stacks", id: "stacks" },
-    { label: "Industries", id: "industries" },
-    { label: "All Projects", id: "all-projects" },
+    { label: "Projects", id: "all-projects" },
     { label: "FAQ", id: "faq" },
   ];
 
-  const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const go = (id) =>
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
 
   return (
-    <section className={`${sectionWrap} pt-6 pb-10`}>
+    <section className={`${sectionWrap} pt-2 pb-6 sm:pb-8`}>
       <motion.div
         variants={containerV}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-50px" }}
-        className="flex flex-wrap gap-2 justify-center"
+        className="flex gap-2 sm:gap-3 overflow-x-auto pb-1"
       >
         {items.map((x) => (
           <motion.button
             key={x.id}
             variants={fadeUpV}
             onClick={() => go(x.id)}
-            className="px-4 py-2 rounded-full text-sm font-semibold border border-white/10 bg-[#0a0a0a] text-zinc-300 hover:bg-white/5 hover:border-white/20 transition-colors"
+            className="shrink-0 px-4 py-2.5 rounded-full text-sm font-semibold border border-white/10 bg-[#0a0a0a] text-zinc-300 hover:bg-white/5 hover:border-white/20 transition-colors"
           >
             {x.label}
           </motion.button>
@@ -434,269 +579,89 @@ const QuickNavSection = () => {
   );
 };
 
-const WhatIBuildSection = () => {
-  const cards = [
-    {
-      title: "Landing pages",
-      desc: "Fast, responsive pages for lead generation & brand presence.",
-      tags: ["Hero", "SEO", "Performance"],
-    },
-    {
-      title: "Dashboards & portals",
-      desc: "Admin panels, CRUD apps, role-based flows, analytics UI.",
-      tags: ["Auth", "CRUD", "RBAC"],
-    },
-    {
-      title: "Client websites",
-      desc: "Business sites with clean UI, speed, and deployment support.",
-      tags: ["Live Deploy", "Support", "Responsive"],
-    },
-  ];
-
-  return (
-    <section id="overview" className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="TOPICS" title="What I build" align="center" />
-        <div className="grid gap-6 md:grid-cols-3">
-          {cards.map((c) => (
-            <motion.div key={c.title} variants={fadeUpV}>
-              <TiltCard>
-                <div className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-8 hover:border-white/20 transition-colors h-full">
-                  <div className="text-white font-bold text-lg">{c.title}</div>
-                  <p className="text-zinc-400 font-light mt-2 leading-relaxed">{c.desc}</p>
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {c.tags.map((t) => (
-                      <span key={t} className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-300">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </section>
-  );
-};
-
-const StackFocusSection = () => {
-  const stacks = [
-    { title: "MERN Stack", desc: "Modern React UI + scalable product-style builds.", tags: ["React", "Vite", "UI System", "APIs"] },
-    { title: "Django", desc: "Secure server-side apps and data-driven systems.", tags: ["Python", "Django", "Auth", "Admin"] },
-    { title: "Client Work", desc: "Live business websites with speed and responsive UI.", tags: ["Live Sites", "UX", "Support"] },
-  ];
-
-  return (
-    <section id="stacks" className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="STACKS" title="Primary development tracks" />
-        <div className="grid gap-6 md:grid-cols-3">
-          {stacks.map((s) => (
-            <motion.div key={s.title} variants={fadeUpV}>
-              <TiltCard>
-                <div className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-8 hover:border-green-500/20 transition-colors h-full">
-                  <div className="flex items-center justify-between">
-                    <div className="text-white font-bold text-lg">{s.title}</div>
-                    <span className="text-[11px] font-black tracking-[3px] text-green-500">FOCUS</span>
-                  </div>
-                  <p className="text-zinc-400 font-light mt-2 leading-relaxed">{s.desc}</p>
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {s.tags.map((t) => (
-                      <span key={t} className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-300">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </section>
-  );
-};
-
-const IndustriesSection = () => {
-  const industries = [
-    { title: "Healthcare", desc: "Hospital / clinic websites & service pages." },
-    { title: "Tour & Travel", desc: "Tour pages, packages, enquiry flows." },
-    { title: "Education", desc: "Course listings, info pages, responsive UI." },
-    { title: "Business", desc: "Company profiles, services, lead pages." },
-  ];
-
-  return (
-    <section id="industries" className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="DOMAIN" title="Industries covered" align="center" />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {industries.map((x) => (
-            <motion.div
-              key={x.title}
-              variants={fadeUpV}
-              className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-7 hover:bg-white/5 transition-colors h-full"
-            >
-              <div className="text-white font-bold">{x.title}</div>
-              <p className="text-zinc-400 font-light mt-2 text-sm leading-relaxed">{x.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </section>
-  );
-};
-
-const TestimonialsSection = () => {
-  const testimonials = [
-    { name: "Client", role: "Business Website", text: "Clean UI, fast delivery, and great support during deployment." },
-    { name: "Client", role: "Clinic Website", text: "Responsive design and clear structure—easy to manage content." },
-    { name: "Client", role: "Tour Website", text: "Good communication and quick changes when needed." },
-  ];
-
-  return (
-    <section className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="TRUST" title="Client feedback (highlights)" />
-        <div className="grid gap-6 md:grid-cols-3">
-          {testimonials.map((t, idx) => (
-            <motion.div key={idx} variants={fadeUpV}>
-              <TiltCard>
-                <div className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-8 hover:border-white/20 transition-colors h-full">
-                  <p className="text-zinc-300 font-light leading-relaxed">“{t.text}”</p>
-                  <div className="mt-5">
-                    <div className="text-white font-bold">{t.name}</div>
-                    <div className="text-zinc-500 text-sm">{t.role}</div>
-                  </div>
-                </div>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </section>
-  );
-};
-
-// -------------------- 4. DYNAMIC SECTIONS --------------------
-const CategoryBreakdownSection = ({ categories, projects }) => {
-  const liveCount = useMemo(
-    () => projects.filter((p) => String(p.status).toLowerCase() === "live").length,
-    [projects]
-  );
-
-  const stats = useMemo(() => {
-    const cats = categories.filter((c) => c !== "All");
-    const catStats = cats.map((c) => ({
-      label: c,
-      value: projects.filter((p) => p.category === c).length,
-    }));
-
-    return [
-      { label: "Total projects", value: projects.length },
-      { label: "Live", value: liveCount },
-      ...catStats,
-    ];
-  }, [categories, liveCount, projects]);
-
-  return (
-    <section className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="OVERVIEW" title="Project breakdown" />
-        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-          {stats.map((s) => (
-            <motion.div
-              key={s.label}
-              variants={fadeUpV}
-              className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-7 text-center"
-            >
-              <div className="text-white font-black text-3xl">{s.value}</div>
-              <div className="text-zinc-500 text-xs font-bold tracking-[2px] uppercase mt-2">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </section>
-  );
-};
-
-const FeaturedSection = ({ projects }) => {
+const FeaturedSection = ({ projects, onQuickView }) => {
   const featured = useMemo(() => {
-    const live = projects.filter((p) => String(p.status).toLowerCase() === "live");
-    return live.slice(0, 2);
+    const withLive = projects.filter((p) => isValidLink(p.links?.live));
+    const liveStatus = projects.filter((p) => String(p.status).toLowerCase() === "live");
+    const source = withLive.length ? withLive : liveStatus.length ? liveStatus : projects;
+    return source.slice(0, 3);
   }, [projects]);
+
+  if (!featured.length) return null;
 
   return (
     <section id="featured" className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="FEATURED" title="Best projects to start with" align="center" />
-        <div className="grid gap-6 md:grid-cols-2">
+      <motion.div
+        variants={containerV}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-50px" }}
+      >
+        <SectionHeading
+          kicker="FEATURED"
+          title="Best projects to start with"
+          desc="Highlighted work with cleaner cards, quick preview, and strong responsive spacing."
+          align="center"
+        />
+
+        <div className="grid gap-6 lg:grid-cols-3">
           {featured.map((p) => (
-            <motion.div key={p.id} variants={fadeUpV}>
-              <TiltCard>
-                <div className="rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden hover:border-white/20 transition-colors h-full flex flex-col">
-                  <div className="relative aspect-[16/10] bg-zinc-900 border-b border-white/10 overflow-hidden">
-                    <motion.img
-                      src={p.img}
-                      alt={p.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.06 }}
-                      transition={{ duration: 0.55 }}
-                    />
-                    <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold text-white border border-white/10">
-                      {p.category}
-                    </div>
-                  </div>
-
-                  <div className="p-8 flex flex-col flex-grow">
-                    <div className="text-white font-black text-2xl">{p.title}</div>
-                    <p className="text-zinc-400 font-light leading-relaxed mt-3 flex-grow">{p.desc}</p>
-
-                    <div className="flex flex-wrap gap-2 mt-5">
-                      {(p.tech || []).slice(0, 6).map((t, idx) => (
-                        <span
-                          key={`${p.id}-${t}-${idx}`}
-                          className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-300"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <a
-                        href={p.links?.live || "#"}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-colors ${
-                          p.links?.live && p.links.live !== "#"
-                            ? "bg-white text-black hover:bg-zinc-200"
-                            : "bg-white/5 text-white/30 border border-white/10 pointer-events-none"
-                        }`}
-                      >
-                        Live <ExternalLink size={16} />
-                      </a>
-
-                      <a
-                        href={p.links?.repo || "#"}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors ${
-                          p.links?.repo && p.links.repo !== "#"
-                            ? "border border-white/20 text-white hover:bg-white/10"
-                            : "bg-white/5 text-white/30 border border-white/10 pointer-events-none"
-                        }`}
-                      >
-                        Code <Github size={16} />
-                      </a>
-                    </div>
-                  </div>
+            <motion.article
+              key={p.id}
+              variants={fadeUpV}
+              className="group rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden hover:border-white/20 transition-colors"
+            >
+              <div className="relative aspect-[16/10] bg-zinc-900 overflow-hidden border-b border-white/10">
+                <SmartImage src={p.img} alt={p.title} />
+                <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                  <span className="bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-white border border-white/10 inline-flex items-center gap-2">
+                    <FolderOpen size={12} />
+                    {p.category}
+                  </span>
+                  <StatusPill status={p.status} />
                 </div>
-              </TiltCard>
-            </motion.div>
+              </div>
+
+              <div className="p-6 sm:p-7">
+                <h3 className="text-white font-bold text-xl">{p.title}</h3>
+                <p className="text-zinc-400 font-light leading-relaxed mt-3 text-sm sm:text-[15px] min-h-[72px]">
+                  {p.desc}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mt-5">
+                  {(p.tech || []).slice(0, 6).map((t, idx) => (
+                    <span
+                      key={`${p.id}-${t}-${idx}`}
+                      className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-300"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <button
+                    onClick={() => onQuickView(p)}
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold border border-white/20 text-white hover:bg-white/10 transition-colors"
+                  >
+                    Quick View <Eye size={16} />
+                  </button>
+
+                  <a
+                    href={isValidLink(p.links?.live) ? p.links.live : "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-colors ${
+                      isValidLink(p.links?.live)
+                        ? "bg-white text-black hover:bg-zinc-200"
+                        : "bg-white/5 text-white/30 border border-white/10 pointer-events-none"
+                    }`}
+                  >
+                    Live <ExternalLink size={16} />
+                  </a>
+                </div>
+              </div>
+            </motion.article>
           ))}
         </div>
       </motion.div>
@@ -704,70 +669,216 @@ const FeaturedSection = ({ projects }) => {
   );
 };
 
-const TechToolboxSection = ({ projects }) => {
-  const techList = useMemo(() => {
-    const set = new Set();
-    projects.forEach((p) => (p.tech || []).forEach((t) => set.add(t)));
-    return Array.from(set).slice(0, 30);
-  }, [projects]);
+const ProjectQuickView = ({ project, onClose }) => {
+  useEffect(() => {
+    if (!project) return;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [project, onClose]);
 
   return (
-    <section className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="TOOLBOX" title="Tech used across projects" />
-        <motion.div variants={fadeUpV} className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-8 md:p-10">
-          <div className="flex flex-wrap gap-3">
-            {techList.map((t) => (
+    <AnimatePresence>
+      {project && (
+        <motion.div
+          className="fixed inset-0 z-[120] bg-black/70 backdrop-blur-md p-4 sm:p-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 28, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 28, scale: 0.98 }}
+            transition={{ duration: 0.28 }}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-4xl mx-auto mt-4 sm:mt-8 rounded-[2rem] overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-2xl"
+          >
+            <div className="relative aspect-[16/9] bg-zinc-900">
+              <SmartImage src={project.img} alt={project.title} />
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 w-11 h-11 rounded-full border border-white/15 bg-black/50 text-white inline-flex items-center justify-center hover:bg-white/10 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-zinc-300">
+                  {project.category}
+                </span>
+                <StatusPill status={project.status} />
+              </div>
+
+              <h3 className="text-white text-2xl sm:text-3xl font-bold">{project.title}</h3>
+              <p className="mt-4 text-zinc-400 leading-relaxed font-light text-sm sm:text-base">
+                {project.desc}
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {(project.tech || []).map((t, idx) => (
+                  <span
+                    key={`${project.id}-modal-${t}-${idx}`}
+                    className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-300"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href={isValidLink(project.links?.live) ? project.links.live : "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-colors ${
+                    isValidLink(project.links?.live)
+                      ? "bg-white text-black hover:bg-zinc-200"
+                      : "bg-white/5 text-white/30 border border-white/10 pointer-events-none"
+                  }`}
+                >
+                  Live Demo <ExternalLink size={16} />
+                </a>
+
+                <a
+                  href={isValidLink(project.links?.repo) ? project.links.repo : "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors ${
+                    isValidLink(project.links?.repo)
+                      ? "border border-white/20 text-white hover:bg-white/10"
+                      : "bg-white/5 text-white/30 border border-white/10 pointer-events-none"
+                  }`}
+                >
+                  Source Code <Github size={16} />
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+const ProjectCard = ({ project, view = "grid", onQuickView }) => {
+  const repoDisabled = !isValidLink(project.links?.repo);
+  const liveDisabled = !isValidLink(project.links?.live);
+
+  return (
+    <motion.article
+      layout
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.22 }}
+      className="h-full"
+    >
+      <div
+        className={`group rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden hover:border-white/20 transition-colors h-full ${
+          view === "list" ? "md:grid md:grid-cols-[340px_1fr]" : "flex flex-col"
+        }`}
+      >
+        <div
+          className={`relative bg-zinc-900 border-b border-white/10 overflow-hidden ${
+            view === "list" ? "md:border-b-0 md:border-r" : ""
+          } ${view === "grid" ? "aspect-[4/3] sm:aspect-[16/11]" : "aspect-[16/10] md:h-full"}`}
+        >
+          <SmartImage src={project.img} alt={project.title} />
+
+          <div className="absolute top-4 left-4 max-w-[70%]">
+            <span className="bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-white border border-white/10 inline-flex items-center gap-2">
+              <FolderOpen size={12} />
+              {project.category}
+            </span>
+          </div>
+
+          <div className="absolute top-4 right-4">
+            <StatusPill status={project.status} />
+          </div>
+        </div>
+
+        <div className="p-5 sm:p-6 flex flex-col flex-grow">
+          <div className="flex items-start justify-between gap-3">
+            <h3 className="text-white font-bold text-lg sm:text-xl group-hover:text-green-400 transition-colors">
+              {project.title}
+            </h3>
+
+            <button
+              onClick={() => onQuickView(project)}
+              className="shrink-0 hidden sm:inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-xs text-zinc-300 hover:bg-white/10 transition-colors"
+            >
+              <Eye size={14} />
+              Preview
+            </button>
+          </div>
+
+          <p className="text-zinc-400 font-light leading-relaxed text-sm sm:text-[15px] mt-3">
+            {project.desc}
+          </p>
+
+          <div className="flex flex-wrap gap-2 mt-5">
+            {(project.tech || []).slice(0, view === "list" ? 8 : 5).map((t, idx) => (
               <span
-                key={t}
-                className="rounded-full border border-white/10 bg-black/30 px-4 py-2 text-sm text-zinc-300 hover:border-green-500/30 hover:text-white transition-colors cursor-default"
+                key={`${project.id}-${t}-${idx}`}
+                className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-300"
               >
                 {t}
               </span>
             ))}
           </div>
-        </motion.div>
-      </motion.div>
-    </section>
-  );
-};
 
-const WorkflowSection = () => {
-  const steps = [
-    { icon: <Search size={20} />, title: "Discover", desc: "Goals, scope, pages, and user flow." },
-    { icon: <Layers size={20} />, title: "Design", desc: "Wireframes + UI system (responsive rules)." },
-    { icon: <Code size={20} />, title: "Build", desc: "Reusable components + clean structure." },
-    { icon: <Briefcase size={20} />, title: "Ship", desc: "Deploy + bug-fix + handoff support." },
-  ];
+          <div className="mt-5 flex flex-wrap gap-3">
+            <button
+              onClick={() => onQuickView(project)}
+              className="sm:hidden inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-semibold border border-white/20 text-white hover:bg-white/10 transition-colors"
+            >
+              Preview <Eye size={15} />
+            </button>
 
-  return (
-    <section className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="WORKFLOW" title="How I build projects" align="center" />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s, i) => (
-            <TiltCard key={i}>
-              <motion.div
-                variants={fadeUpV}
-                whileHover={{ y: -6 }}
-                className="rounded-3xl border border-white/10 bg-[#0a0a0a] p-8 hover:border-white/20 transition-colors h-full"
-              >
-                <div className="flex items-center justify-between mb-5">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl border border-white/10 bg-white/5 text-green-400">
-                    {s.icon}
-                  </div>
-                  <div className="text-[12px] font-black tracking-[3px] text-green-500">
-                    STEP {String(i + 1).padStart(2, "0")}
-                  </div>
-                </div>
-                <div className="text-white font-bold text-lg">{s.title}</div>
-                <p className="text-zinc-400 font-light leading-relaxed mt-2">{s.desc}</p>
-              </motion.div>
-            </TiltCard>
-          ))}
+            <a
+              href={project.links?.live || "#"}
+              target="_blank"
+              rel="noreferrer"
+              aria-disabled={liveDisabled}
+              className={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold transition-colors ${
+                liveDisabled
+                  ? "bg-white/5 text-white/30 border border-white/10 pointer-events-none"
+                  : "bg-white text-black hover:bg-zinc-200"
+              }`}
+            >
+              Live <ExternalLink size={15} />
+            </a>
+
+            <a
+              href={project.links?.repo || "#"}
+              target="_blank"
+              rel="noreferrer"
+              aria-disabled={repoDisabled}
+              className={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-semibold transition-colors ${
+                repoDisabled
+                  ? "bg-white/5 text-white/30 border border-white/10 pointer-events-none"
+                  : "border border-white/20 text-white hover:bg-white/10"
+              }`}
+            >
+              Code <Github size={15} />
+            </a>
+          </div>
         </div>
-      </motion.div>
-    </section>
+      </div>
+    </motion.article>
   );
 };
 
@@ -775,10 +886,21 @@ const FAQSection = () => {
   const [open, setOpen] = useState(0);
 
   return (
-    <section className={`${sectionWrap} ${sectionPad}`}>
-      <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-        <SectionHeading kicker="FAQ" title="Project questions" />
-        <div className="grid gap-4 max-w-[900px] mx-auto">
+    <section id="faq" className={`${sectionWrap} ${sectionPad}`}>
+      <motion.div
+        variants={containerV}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-50px" }}
+      >
+        <SectionHeading
+          kicker="FAQ"
+          title="Project questions"
+          desc="Short answers for common project and source-code related queries."
+          align="center"
+        />
+
+        <div className="grid gap-4 max-w-[920px] mx-auto">
           {projectsFAQ.map((item, i) => {
             const isOpen = open === i;
 
@@ -787,17 +909,25 @@ const FAQSection = () => {
                 key={i}
                 variants={fadeUpV}
                 className={`rounded-2xl border transition-colors ${
-                  isOpen ? "border-green-500/50 bg-white/5" : "border-white/10 bg-[#0a0a0a] hover:bg-white/5"
+                  isOpen
+                    ? "border-green-500/40 bg-white/5"
+                    : "border-white/10 bg-[#0a0a0a] hover:bg-white/5"
                 }`}
               >
                 <button
                   onClick={() => setOpen(isOpen ? -1 : i)}
-                  className="w-full flex items-center justify-between gap-4 p-6 text-left"
-                  aria-expanded={isOpen}
+                  className="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left"
                 >
-                  <div className="flex items-center gap-4">
-                    <HelpCircle size={20} className={isOpen ? "text-green-500" : "text-zinc-600"} />
-                    <span className={`font-semibold text-[1.02rem] ${isOpen ? "text-white" : "text-zinc-300"}`}>
+                  <div className="flex items-start gap-4">
+                    <HelpCircle
+                      size={20}
+                      className={isOpen ? "text-green-500 mt-0.5" : "text-zinc-600 mt-0.5"}
+                    />
+                    <span
+                      className={`font-semibold text-[15px] sm:text-[1.02rem] ${
+                        isOpen ? "text-white" : "text-zinc-300"
+                      }`}
+                    >
                       {item.q}
                     </span>
                   </div>
@@ -806,7 +936,6 @@ const FAQSection = () => {
                     animate={{ rotate: isOpen ? 90 : 0 }}
                     transition={{ duration: 0.2 }}
                     className={isOpen ? "text-white" : "text-zinc-600"}
-                    aria-hidden="true"
                   >
                     <ArrowRight size={18} />
                   </motion.span>
@@ -819,10 +948,10 @@ const FAQSection = () => {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 0.25 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-6 text-zinc-400 font-light leading-relaxed pl-[3.25rem]">
+                      <div className="px-5 sm:px-6 pb-6 text-zinc-400 font-light leading-relaxed sm:pl-[3.45rem]">
                         {item.a}
                       </div>
                     </motion.div>
@@ -839,56 +968,143 @@ const FAQSection = () => {
 
 // -------------------- 5. MAIN PAGE --------------------
 const Project = () => {
-  const [projects, setProjects] = useState(initialProjects);
+  const fallbackProjects = useMemo(
+    () => initialProjects.map((p, i) => normalizeProject(p, i)),
+    []
+  );
+
+  const [projects, setProjects] = useState(fallbackProjects);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeStatus, setActiveStatus] = useState("All");
   const [query, setQuery] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
+  const [view, setView] = useState("grid");
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [loadCount, setLoadCount] = useState(6);
+  const [loading, setLoading] = useState(true);
+
+  const debouncedQuery = useDebouncedValue(query, 250);
+
+  const loadProjects = async () => {
+    try {
+      setLoading(true);
+
+      const data = await apiFetch("/api/projects");
+      const raw = Array.isArray(data?.projects)
+        ? data.projects
+        : Array.isArray(data)
+        ? data
+        : [];
+
+      const merged = mergeProjects(fallbackProjects, raw);
+      setProjects(merged);
+    } catch (error) {
+      console.error("Failed to fetch projects, using fallback data.", error);
+      setProjects(fallbackProjects);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    let alive = true;
-
-    apiFetch("/api/projects")
-      .then((data) => {
-        if (!alive) return;
-        if (data?.projects?.length) {
-          setProjects(data.projects);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch projects, falling back to initial data", error);
-      });
-
-    return () => {
-      alive = false;
-    };
+    loadProjects();
   }, []);
+
+  useEffect(() => {
+    setLoadCount(6);
+  }, [activeCategory, activeStatus, debouncedQuery, sortBy, view]);
 
   const categories = useMemo(() => {
     const set = new Set(projects.map((p) => p.category));
     return ["All", ...Array.from(set)];
   }, [projects]);
 
-  const filteredProjects = useMemo(() => {
-    const byCat = activeCategory === "All" ? projects : projects.filter((p) => p.category === activeCategory);
-    const q = query.trim().toLowerCase();
-    if (!q) return byCat;
+  const statuses = useMemo(() => {
+    const set = new Set(projects.map((p) => p.status));
+    return ["All", ...Array.from(set)];
+  }, [projects]);
 
-    return byCat.filter((p) => {
-      const hay = `${p.title} ${p.desc} ${p.category} ${(p.tech || []).join(" ")}`.toLowerCase();
-      return hay.includes(q);
-    });
-  }, [activeCategory, query, projects]);
+  const filteredProjects = useMemo(() => {
+    let list = [...projects];
+
+    if (activeCategory !== "All") {
+      list = list.filter((p) => p.category === activeCategory);
+    }
+
+    if (activeStatus !== "All") {
+      list = list.filter(
+        (p) => String(p.status).toLowerCase() === String(activeStatus).toLowerCase()
+      );
+    }
+
+    const q = debouncedQuery.trim().toLowerCase();
+    if (q) {
+      list = list.filter((p) => {
+        const hay =
+          `${p.title} ${p.desc} ${p.category} ${p.status} ${(p.tech || []).join(" ")}`
+            .toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    switch (sortBy) {
+      case "title-asc":
+        list.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "title-desc":
+        list.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case "live-first":
+        list.sort((a, b) => {
+          const av = String(a.status).toLowerCase() === "live" ? 1 : 0;
+          const bv = String(b.status).toLowerCase() === "live" ? 1 : 0;
+          return bv - av;
+        });
+        break;
+      default:
+        list.sort((a, b) => Number(b.id) - Number(a.id));
+    }
+
+    return list;
+  }, [projects, activeCategory, activeStatus, debouncedQuery, sortBy]);
+
+  const visibleProjects = useMemo(
+    () => filteredProjects.slice(0, loadCount),
+    [filteredProjects, loadCount]
+  );
+
+  const stats = useMemo(() => {
+    const liveCount = projects.filter(
+      (p) => String(p.status).toLowerCase() === "live"
+    ).length;
+
+    const techCount = new Set(
+      projects.flatMap((p) => (Array.isArray(p.tech) ? p.tech : []))
+    ).size;
+
+    return {
+      total: projects.length,
+      live: liveCount,
+      categories: Math.max(categories.length - 1, 0),
+      visible: filteredProjects.length,
+      tech: techCount,
+    };
+  }, [projects, categories, filteredProjects]);
 
   return (
-    <MotionConfig transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
+    <MotionConfig transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}>
       <div className="bg-[#030303] min-h-screen text-white font-sans selection:bg-green-500/30">
         <ScrollProgress />
         <BackToTop />
+        <ProjectQuickView project={selectedProject} onClose={() => setSelectedProject(null)} />
 
-        {/* HERO */}
-        <section className={`${sectionWrap} min-h-[58vh] pt-[110px] pb-[70px] relative overflow-hidden`}>
+        <section
+          className={`${sectionWrap} min-h-[54vh] sm:min-h-[62vh] pt-[96px] sm:pt-[110px] pb-[56px] sm:pb-[72px] relative overflow-hidden`}
+        >
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-24 -left-24 w-[520px] h-[520px] bg-green-500/10 rounded-full blur-[120px]" />
-            <div className="absolute -bottom-24 -right-24 w-[520px] h-[520px] bg-white/5 rounded-full blur-[120px]" />
+            <div className="absolute -top-24 -left-24 w-[420px] sm:w-[520px] h-[420px] sm:h-[520px] bg-green-500/10 rounded-full blur-[120px]" />
+            <div className="absolute -bottom-24 -right-24 w-[420px] sm:w-[520px] h-[420px] sm:h-[520px] bg-white/5 rounded-full blur-[120px]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.12),transparent_55%)]" />
           </div>
 
@@ -898,221 +1114,333 @@ const Project = () => {
             transition={{ duration: 0.55 }}
             className="relative z-10 text-center"
           >
-            <div className="inline-flex items-center gap-3 rounded-full border border-green-500/30 bg-green-500/10 px-5 py-2.5 text-[12px] font-medium tracking-widest text-green-400 mb-7">
+            <div className="inline-flex items-center gap-3 rounded-full border border-green-500/30 bg-green-500/10 px-4 sm:px-5 py-2.5 text-[11px] sm:text-[12px] font-medium tracking-widest text-green-400 mb-6 sm:mb-7">
               PORTFOLIO
             </div>
 
-            <h1 className="text-white font-extrabold leading-[1.05] tracking-tight text-[clamp(2.7rem,7vw,5.2rem)]">
-              My Recent
+            <h1 className="text-white font-extrabold leading-[1.05] tracking-tight text-[clamp(2.4rem,8vw,5.5rem)]">
+              Dynamic
               <br />
-              <span className="text-zinc-400">Projects</span>
+              <span className="text-zinc-400">Project Showcase</span>
             </h1>
 
-            <p className="mt-5 max-w-[740px] mx-auto text-zinc-400 font-light leading-relaxed text-[1.02rem] md:text-[1.15rem]">
-              A showcase of MERN, Django, and Client Work with a focus on clean UI and reliable builds.
+            <p className="mt-5 max-w-[780px] mx-auto text-zinc-400 font-light leading-relaxed text-[0.98rem] sm:text-[1.04rem] md:text-[1.15rem] px-2">
+              Advanced project browsing with quick preview, filters, search, grid/list view, and smoother mobile responsiveness.
             </p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <a
+                href="#all-projects"
+                className="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 sm:px-8 py-3.5 text-sm sm:text-[15px] font-bold hover:bg-zinc-200 transition-colors"
+              >
+                Explore Projects <ArrowRight size={16} />
+              </a>
+              <a
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-transparent px-6 sm:px-8 py-3.5 text-sm sm:text-[15px] font-semibold text-white hover:bg-white/10 transition-colors"
+              >
+                Start a conversation <Mail size={16} />
+              </a>
+            </div>
           </motion.div>
         </section>
 
         <QuickNavSection />
-        <CategoryBreakdownSection categories={categories} projects={projects} />
-        <WhatIBuildSection />
-        <FeaturedSection projects={projects} />
-        <StackFocusSection />
-        <TechToolboxSection projects={projects} />
-        <IndustriesSection />
-        <WorkflowSection />
 
-        {/* FILTER + GRID */}
-        <section id="all-projects" className={`${sectionWrap} ${sectionPad}`}>
-          <motion.div variants={containerV} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-              <SectionHeading kicker="WORK" title="Browse all projects" />
-              <motion.div variants={fadeUpV} className="flex flex-col sm:flex-row gap-3 sm:items-center">
-                <div className="relative">
-                  <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
-                  <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search projects…"
-                    className="w-full sm:w-[280px] rounded-full border border-white/10 bg-[#0a0a0a] pl-11 pr-4 py-3 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-green-500/40"
-                  />
-                </div>
-                <div className="inline-flex items-center gap-2 text-zinc-400 text-sm">
-                  <Filter size={16} className="text-green-500" /> Filter:
-                </div>
-              </motion.div>
+        <section id="overview" className={`${sectionWrap} ${sectionPad}`}>
+          <motion.div
+            variants={containerV}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <SectionHeading
+              kicker="OVERVIEW"
+              title="Project dashboard"
+              desc="Now cleaner, more dynamic, and fully responsive."
+              align="center"
+            />
+
+            <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-5">
+              <StatCard label="Total projects" value={stats.total} icon={<FolderOpen size={18} />} />
+              <StatCard label="Live projects" value={stats.live} icon={<Zap size={18} />} />
+              <StatCard label="Categories" value={stats.categories} icon={<Layers size={18} />} />
+              <StatCard label="Visible now" value={stats.visible} icon={<Search size={18} />} />
+              <StatCard label="Tech tools" value={stats.tech} icon={<Code size={18} />} />
             </div>
+          </motion.div>
+        </section>
 
-            <motion.div variants={fadeUpV} className="flex flex-wrap gap-2 md:gap-3 mb-10">
-              {categories.map((cat) => {
-                const isActive = activeCategory === cat;
-                return (
+        <FeaturedSection projects={projects} onQuickView={setSelectedProject} />
+
+        <section id="all-projects" className={`${sectionWrap} ${sectionPad}`}>
+          <motion.div
+            variants={containerV}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <SectionHeading
+              kicker="PROJECTS"
+              title="Browse all projects"
+              desc="Search faster, switch layouts, use quick preview, and load more only when needed."
+              action={
+                <button
+                  onClick={loadProjects}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-[#0a0a0a] px-4 py-2.5 text-sm font-semibold text-zinc-300 hover:bg-white/5 transition-colors"
+                >
+                  <Zap size={16} className="text-green-400" />
+                  Refresh
+                </button>
+              }
+            />
+
+            <motion.div
+              variants={fadeUpV}
+              className="sticky top-3 z-20 mb-8 rounded-[1.75rem] border border-white/10 bg-[#0a0a0a]/85 backdrop-blur-xl p-4 sm:p-5"
+            >
+              <div className="flex flex-col gap-4">
+                <div className="grid gap-3 lg:grid-cols-[1.4fr_auto_auto_auto]">
+                  <div className="relative">
+                    <Search
+                      size={16}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"
+                    />
+                    <input
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search by title, tech, category..."
+                      className="w-full rounded-full border border-white/10 bg-black/30 pl-11 pr-4 py-3 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-green-500/40"
+                    />
+                  </div>
+
                   <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
-                      isActive
-                        ? "border-green-500/50 bg-green-500/10 text-green-300"
-                        : "border-white/10 bg-[#0a0a0a] text-zinc-300 hover:bg-white/5"
-                    }`}
+                    onClick={() => setShowMobileFilters((prev) => !prev)}
+                    className="lg:hidden inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-300"
                   >
-                    {cat}
+                    <SlidersHorizontal size={16} />
+                    Filters
                   </button>
-                );
-              })}
-            </motion.div>
 
-            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 md:gap-8">
-              <AnimatePresence>
-                {filteredProjects.map((project) => {
-                  const repoDisabled = !project.links?.repo || project.links.repo === "#";
-                  const liveDisabled = !project.links?.live || project.links.live === "#";
-
-                  return (
-                    <motion.div
-                      key={project.id}
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.3 }}
-                      className="group flex flex-col h-full"
+                  <div className="inline-flex rounded-full border border-white/10 bg-black/30 p-1">
+                    <button
+                      onClick={() => setView("grid")}
+                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm transition-colors ${
+                        view === "grid"
+                          ? "bg-white text-black"
+                          : "text-zinc-300 hover:bg-white/10"
+                      }`}
                     >
-                      <TiltCard>
-                        <div className="rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden hover:border-white/20 transition-colors h-full flex flex-col">
-                          <div className="relative aspect-[4/3] bg-zinc-900 border-b border-white/10 overflow-hidden shrink-0">
-                            <img
-                              src={project.img}
-                              alt={project.title}
-                              loading="lazy"
-                              decoding="async"
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
+                      <Grid3X3 size={15} />
+                      Grid
+                    </button>
+                    <button
+                      onClick={() => setView("list")}
+                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm transition-colors ${
+                        view === "list"
+                          ? "bg-white text-black"
+                          : "text-zinc-300 hover:bg-white/10"
+                      }`}
+                    >
+                      <List size={15} />
+                      List
+                    </button>
+                  </div>
 
-                            <div className="absolute top-4 left-4">
-                              <span className="bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-white border border-white/10 inline-flex items-center gap-2">
-                                <FolderOpen size={12} />
-                                {project.category}
-                              </span>
-                            </div>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full rounded-full border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-200 outline-none focus:border-green-500/40"
+                  >
+                    <option value="newest" className="bg-[#0a0a0a]">
+                      Newest first
+                    </option>
+                    <option value="live-first" className="bg-[#0a0a0a]">
+                      Live first
+                    </option>
+                    <option value="title-asc" className="bg-[#0a0a0a]">
+                      Title A-Z
+                    </option>
+                    <option value="title-desc" className="bg-[#0a0a0a]">
+                      Title Z-A
+                    </option>
+                  </select>
+                </div>
 
-                            <div className="absolute top-4 right-4">
-                              <span
-                                className={`px-3 py-1.5 rounded-full text-xs font-semibold border backdrop-blur-md ${
-                                  String(project.status).toLowerCase() === "live"
-                                    ? "bg-green-500/15 text-green-300 border-green-500/30"
-                                    : "bg-black/60 text-zinc-200 border-white/10"
-                                }`}
-                              >
-                                {project.status}
-                              </span>
-                            </div>
+                <div
+                  className={`grid gap-3 lg:grid-cols-2 ${
+                    showMobileFilters ? "block" : "hidden lg:grid"
+                  }`}
+                >
+                  <select
+                    value={activeCategory}
+                    onChange={(e) => setActiveCategory(e.target.value)}
+                    className="w-full rounded-full border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-200 outline-none focus:border-green-500/40"
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat} className="bg-[#0a0a0a]">
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
 
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
-                              <a
-                                href={project.links?.repo || "#"}
-                                target="_blank"
-                                rel="noreferrer"
-                                aria-disabled={repoDisabled}
-                                className={`w-12 h-12 rounded-full inline-flex items-center justify-center border transition-colors ${
-                                  repoDisabled
-                                    ? "border-white/10 bg-white/5 text-white/30 pointer-events-none"
-                                    : "border-white/10 bg-white text-black hover:bg-zinc-200"
-                                }`}
-                                title="View Code"
-                              >
-                                <Github size={20} />
-                              </a>
+                  <select
+                    value={activeStatus}
+                    onChange={(e) => setActiveStatus(e.target.value)}
+                    className="w-full rounded-full border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-200 outline-none focus:border-green-500/40"
+                  >
+                    {statuses.map((status) => (
+                      <option key={status} value={status} className="bg-[#0a0a0a]">
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                              <a
-                                href={project.links?.live || "#"}
-                                target="_blank"
-                                rel="noreferrer"
-                                aria-disabled={liveDisabled}
-                                className={`w-12 h-12 rounded-full inline-flex items-center justify-center border transition-colors ${
-                                  liveDisabled
-                                    ? "border-white/10 bg-white/5 text-white/30 pointer-events-none"
-                                    : "border-white/10 bg-white text-black hover:bg-zinc-200"
-                                }`}
-                                title="Live Demo"
-                              >
-                                <ExternalLink size={20} />
-                              </a>
-                            </div>
-                          </div>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                  <span className="text-xs sm:text-sm text-zinc-500">
+                    Showing <span className="text-white font-semibold">{visibleProjects.length}</span> of{" "}
+                    <span className="text-white font-semibold">{filteredProjects.length}</span> matched, total{" "}
+                    <span className="text-white font-semibold">{projects.length}</span>
+                  </span>
 
-                          <div className="p-7 flex flex-col flex-grow">
-                            <h3 className="text-white font-bold text-xl mb-2 group-hover:text-green-400 transition-colors">
-                              {project.title}
-                            </h3>
-                            <p className="text-zinc-400 font-light leading-relaxed text-sm mb-5 flex-grow">
-                              {project.desc}
-                            </p>
+                  {activeCategory !== "All" && (
+                    <button
+                      onClick={() => setActiveCategory("All")}
+                      className="px-3 py-1.5 rounded-full text-xs border border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10 transition-colors"
+                    >
+                      Category: {activeCategory} ×
+                    </button>
+                  )}
 
-                            <div className="flex flex-wrap gap-2 mt-auto">
-                              {(project.tech || []).slice(0, 5).map((t, idx) => (
-                                <span
-                                  key={`${project.id}-${t}-${idx}`}
-                                  className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-zinc-300"
-                                >
-                                  {t}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </TiltCard>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
+                  {activeStatus !== "All" && (
+                    <button
+                      onClick={() => setActiveStatus("All")}
+                      className="px-3 py-1.5 rounded-full text-xs border border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10 transition-colors"
+                    >
+                      Status: {activeStatus} ×
+                    </button>
+                  )}
+
+                  {query && (
+                    <button
+                      onClick={() => setQuery("")}
+                      className="px-3 py-1.5 rounded-full text-xs border border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10 transition-colors"
+                    >
+                      Search reset ×
+                    </button>
+                  )}
+                </div>
+              </div>
             </motion.div>
 
-            {filteredProjects.length === 0 && (
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    variants={fadeUpV}
+                    className="rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden"
+                  >
+                    <div className="aspect-[4/3] bg-white/5 animate-pulse" />
+                    <div className="p-6">
+                      <div className="h-6 w-2/3 rounded bg-white/5 animate-pulse" />
+                      <div className="mt-4 h-4 w-full rounded bg-white/5 animate-pulse" />
+                      <div className="mt-2 h-4 w-5/6 rounded bg-white/5 animate-pulse" />
+                      <div className="mt-5 flex gap-2">
+                        <div className="h-8 w-20 rounded-full bg-white/5 animate-pulse" />
+                        <div className="h-8 w-16 rounded-full bg-white/5 animate-pulse" />
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            ) : visibleProjects.length > 0 ? (
+              <>
+                <motion.div
+                  layout
+                  className={`${
+                    view === "grid"
+                      ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-7"
+                      : "grid grid-cols-1 gap-5"
+                  }`}
+                >
+                  <AnimatePresence mode="popLayout">
+                    {visibleProjects.map((project) => (
+                      <ProjectCard
+                        key={project.id}
+                        project={project}
+                        view={view}
+                        onQuickView={setSelectedProject}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+
+                {visibleProjects.length < filteredProjects.length && (
+                  <motion.div variants={fadeUpV} className="mt-8 flex justify-center">
+                    <button
+                      onClick={() => setLoadCount((prev) => prev + 6)}
+                      className="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3.5 text-sm font-bold hover:bg-zinc-200 transition-colors"
+                    >
+                      Load More <ArrowRight size={16} />
+                    </button>
+                  </motion.div>
+                )}
+              </>
+            ) : (
               <motion.div
                 variants={fadeUpV}
-                className="mt-12 rounded-3xl border border-white/10 bg-[#0a0a0a] p-10 text-center"
+                className="mt-6 rounded-3xl border border-white/10 bg-[#0a0a0a] p-10 sm:p-12 text-center"
               >
                 <Zap size={40} className="text-green-500 mx-auto mb-4" />
-                <p className="text-zinc-300 font-semibold">No projects found.</p>
-                <p className="text-zinc-500 text-sm mt-2">Try changing category or search keyword.</p>
+                <p className="text-zinc-300 font-semibold text-lg">No projects found</p>
+                <p className="text-zinc-500 text-sm mt-2">
+                  Try a different search, category, or status filter.
+                </p>
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
+                  <button
+                    onClick={() => {
+                      setQuery("");
+                      setActiveCategory("All");
+                      setActiveStatus("All");
+                    }}
+                    className="rounded-full bg-white text-black px-5 py-3 text-sm font-bold hover:bg-zinc-200 transition-colors"
+                  >
+                    Reset filters
+                  </button>
+                </div>
               </motion.div>
             )}
           </motion.div>
         </section>
 
-        <div id="faq">
-          <FAQSection />
-        </div>
+        <FAQSection />
 
-        <TestimonialsSection />
-
-        {/* CTA */}
-        <section className={`${sectionWrap} pb-24`}>
+        <section className={`${sectionWrap} pb-20 sm:pb-24`}>
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.45 }}
-            className="rounded-[2.5rem] border border-white/10 bg-[#0a0a0a] p-10 md:p-16 text-center hover:border-white/20 transition-colors"
+            className="rounded-[2rem] sm:rounded-[2.5rem] border border-white/10 bg-[#0a0a0a] p-8 sm:p-10 md:p-14 text-center hover:border-white/20 transition-colors"
           >
-            <h3 className="text-white font-black leading-tight text-[2rem] sm:text-[2.4rem] md:text-[3.2rem]">
-              Want a project like this?
+            <h3 className="text-white font-black leading-tight text-[1.9rem] sm:text-[2.4rem] md:text-[3.1rem]">
+              Need a portfolio
               <br />
-              <span className="text-green-500">Lets build it.</span>
+              <span className="text-green-500">this dynamic?</span>
             </h3>
 
-            <p className="text-zinc-400 font-light leading-relaxed mt-4 max-w-[640px] mx-auto">
-              Share your requirements and I’ll suggest the best UI + tech approach with a clear timeline.
+            <p className="text-zinc-400 font-light leading-relaxed mt-4 max-w-[680px] mx-auto text-sm sm:text-base">
+              I can also convert this into an admin-managed or API-driven showcase with featured projects, project details, and better content control.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4 justify-center">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <a href="/contact">
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center gap-2 rounded-full bg-white text-black px-9 py-3.5 text-[15px] font-bold hover:bg-zinc-200 transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white text-black px-8 sm:px-9 py-3.5 text-[15px] font-bold hover:bg-zinc-200 transition-colors"
                 >
                   Start a conversation <Mail size={18} />
                 </motion.button>
@@ -1122,7 +1450,7 @@ const Project = () => {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-transparent px-9 py-3.5 text-[15px] font-semibold text-white hover:bg-white/10 transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-transparent px-8 sm:px-9 py-3.5 text-[15px] font-semibold text-white hover:bg-white/10 transition-colors"
                 >
                   Know more about me <ArrowRight size={18} />
                 </motion.button>
