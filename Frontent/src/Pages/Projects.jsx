@@ -14,7 +14,6 @@ import {
   Code,
   ExternalLink,
   Eye,
-  Filter,
   FolderOpen,
   Github,
   Grid3X3,
@@ -68,7 +67,7 @@ const initialProjects = [
     title: "Personal Portfolio",
     category: "MERN Stack",
     status: "Live",
-    img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop",
+    img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97e?q=80&w=1200&auto=format&fit=crop",
     desc: "High-performance personal portfolio showcasing skills, projects, and contact info.",
     tech: ["React", "Vite", "Framer Motion", "SEO"],
     links: { live: "#", repo: "#" },
@@ -977,11 +976,10 @@ const Project = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeStatus, setActiveStatus] = useState("All");
   const [query, setQuery] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("title-asc");
   const [view, setView] = useState("grid");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [loadCount, setLoadCount] = useState(6);
   const [loading, setLoading] = useState(true);
 
   const debouncedQuery = useDebouncedValue(query, 250);
@@ -1010,10 +1008,6 @@ const Project = () => {
   useEffect(() => {
     loadProjects();
   }, []);
-
-  useEffect(() => {
-    setLoadCount(6);
-  }, [activeCategory, activeStatus, debouncedQuery, sortBy, view]);
 
   const categories = useMemo(() => {
     const set = new Set(projects.map((p) => p.category));
@@ -1069,10 +1063,7 @@ const Project = () => {
     return list;
   }, [projects, activeCategory, activeStatus, debouncedQuery, sortBy]);
 
-  const visibleProjects = useMemo(
-    () => filteredProjects.slice(0, loadCount),
-    [filteredProjects, loadCount]
-  );
+  const visibleProjects = useMemo(() => filteredProjects, [filteredProjects]);
 
   const stats = useMemo(() => {
     const liveCount = projects.filter(
@@ -1183,7 +1174,7 @@ const Project = () => {
             <SectionHeading
               kicker="PROJECTS"
               title="Browse all projects"
-              desc="Search faster, switch layouts, use quick preview, and load more only when needed."
+              desc="Search faster, switch layouts, preview instantly, and view all 25 projects together."
               action={
                 <button
                   onClick={loadProjects}
@@ -1252,17 +1243,17 @@ const Project = () => {
                     onChange={(e) => setSortBy(e.target.value)}
                     className="w-full rounded-full border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-200 outline-none focus:border-green-500/40"
                   >
-                    <option value="newest" className="bg-[#0a0a0a]">
-                      Newest first
-                    </option>
-                    <option value="live-first" className="bg-[#0a0a0a]">
-                      Live first
-                    </option>
                     <option value="title-asc" className="bg-[#0a0a0a]">
                       Title A-Z
                     </option>
                     <option value="title-desc" className="bg-[#0a0a0a]">
                       Title Z-A
+                    </option>
+                    <option value="live-first" className="bg-[#0a0a0a]">
+                      Live first
+                    </option>
+                    <option value="newest" className="bg-[#0a0a0a]">
+                      Newest first
                     </option>
                   </select>
                 </div>
@@ -1356,38 +1347,25 @@ const Project = () => {
                 ))}
               </div>
             ) : visibleProjects.length > 0 ? (
-              <>
-                <motion.div
-                  layout
-                  className={`${
-                    view === "grid"
-                      ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-7"
-                      : "grid grid-cols-1 gap-5"
-                  }`}
-                >
-                  <AnimatePresence mode="popLayout">
-                    {visibleProjects.map((project) => (
-                      <ProjectCard
-                        key={project.id}
-                        project={project}
-                        view={view}
-                        onQuickView={setSelectedProject}
-                      />
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
-
-                {visibleProjects.length < filteredProjects.length && (
-                  <motion.div variants={fadeUpV} className="mt-8 flex justify-center">
-                    <button
-                      onClick={() => setLoadCount((prev) => prev + 6)}
-                      className="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3.5 text-sm font-bold hover:bg-zinc-200 transition-colors"
-                    >
-                      Load More <ArrowRight size={16} />
-                    </button>
-                  </motion.div>
-                )}
-              </>
+              <motion.div
+                layout
+                className={`${
+                  view === "grid"
+                    ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-7"
+                    : "grid grid-cols-1 gap-5"
+                }`}
+              >
+                <AnimatePresence mode="popLayout">
+                  {visibleProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      view={view}
+                      onQuickView={setSelectedProject}
+                    />
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             ) : (
               <motion.div
                 variants={fadeUpV}
@@ -1404,6 +1382,7 @@ const Project = () => {
                       setQuery("");
                       setActiveCategory("All");
                       setActiveStatus("All");
+                      setSortBy("title-asc");
                     }}
                     className="rounded-full bg-white text-black px-5 py-3 text-sm font-bold hover:bg-zinc-200 transition-colors"
                   >
